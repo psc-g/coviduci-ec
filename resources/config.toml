@@ -1,13 +1,14 @@
+# This file needs to be modified and placed in 'resources/' the parent directory.
 # Keys
 title = "My TOML Config"
 
 # Tables
 [sms]
-origin = "ICUBAM"
+origin = "COVIDUCI"
 carrier = "TW"
 
 [db]
-sqlite_path = "icubam.db"
+sqlite_path = "coviduci.db"
 
 [server]
   [server.dev]
@@ -15,7 +16,7 @@ sqlite_path = "icubam.db"
   base_url = "https://localhost:8888/"
   [server.prod]
   port = 443
-  base_url = "https://test.icubam.net/"
+  base_url = "https://www.coviduci.ec/"
 
 [scheduler]
   [scheduler.prod]

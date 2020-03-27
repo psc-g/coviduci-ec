@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+{% end %}
+
+{% block content %}
+<div class="container">
+    <h1>Camas</h1>
+    <table id="camas" class=" table table-hover table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th>Hospital</th>
+            <th>Total</th>
+            <th>Usadas</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="container">
+    <h1>Personal</h1>
+    <table id="personal" class=" table table-hover table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th>Hospital</th>
+            <th>Méd.</th>
+            <th>Enf.</th>
+            <th>Aux.</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="container">
+    <h1>Insumos</h1>
+    <table id="insumos" class=" table table-hover table-bordered" style="align:center; width:100%">
+        <thead>
+        <tr>
+            <th>Hospital</th>
+            <th>Respiradores</th>
+            <th>Tubos ETT</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="container">
+    <h1>Medicaciones</h1>
+    <table id="medicaciones" class=" table table-hover table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th>Hospital</th>
+            <th>1era</th>
+            <th>2da</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+<div class="container">
+    <h1>Pacientes</h1>
+    <table id="pacientes" class=" table table-hover table-bordered" style="width:100%">
+        <thead>
+        <tr>
+            <th>Hospital</th>
+            <th>Ingresados</th>
+            <th>Fallecidos</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+
+{% end %}
+
+
+{% block scripts %}
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+
+<script type="text/javascript" charset="utf8" src="/static/show.js">
+
+</script>
+{% end %}

@@ -3,7 +3,7 @@ title = "My TOML Config"
 
 # Tables
 [sms]
-origin = "ICUBAM"
+origin = "COVIDUCI"
 carrier = "nx"
 
 [db]
@@ -15,7 +15,7 @@ sqlite_path = "test.db"
   base_url = "https://localhost"
   [server.prod]
   port = 443
-  base_url = "https://test.icubam.net/"
+  base_url = "https://www.coviduci.net/"
 
 [scheduler]
   [scheduler.prod]

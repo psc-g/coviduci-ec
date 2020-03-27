@@ -1,9 +1,10 @@
+"""Script to pull data from spreadsheet and populate SQLite database."""
 from absl import app
 from absl import flags
-from icubam import config
-from icubam.db import sqlite
-from icubam.db import gsheets
-from icubam.db import synchronizer
+from coviduci import config
+from coviduci.db import sqlite
+from coviduci.db import gsheets
+from coviduci.db import synchronizer
 
 flags.DEFINE_string("config", "resources/config.toml", "Config file.")
 flags.DEFINE_string("dotenv_path", "resources/.env", "Config file.")
@@ -16,18 +17,12 @@ def main(unused_argv):
   shdb = gsheets.SheetsDB(cfg.TOKEN_LOC, cfg.SHEET_ID)
   sqldb = sqlite.SQLiteDB(cfg.db.sqlite_path)
   sync = synchronizer.Synchronizer(shdb, sqldb)
-  reply = (
-    str(
-      input(
-        "!!Are you sure you want to sync, this will drop all users!! (duh/nay)"
-      )
-    )
-    .lower()
-    .strip()
-  )
-  if reply == "duh":
-    sync.sync_icus()
-    sync.sync_users()
+  sync.sync_hospitales()
+  sync.sync_camas()
+  sync.sync_personal()
+  sync.sync_insumos()
+  sync.sync_medicaciones()
+  sync.sync_pacientes()
 
 
 if __name__ == "__main__":

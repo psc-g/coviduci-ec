@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>COVIDU-EC</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+  </head>
+
+  <body>
+    <div class='main-content'>
+
+      <h1>Hospital {{hospital}}</h1>
+
+      <p>Última actualización: {{last_update}}</p>
+
+      <form action="/update" method="POST">
+        <input class="form-control" type="hidden"
+         name="hospital" id="hospital" value="{{hospital}}">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="camas_total" class="form-label">Camas total</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="camas_total" id="camas_total" value="{{camas_total}}">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="camas_usadas" class="form-label">Camas usadas</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{camas_usadas}}" name="camas_usadas" id="camas_usadas">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="medicos" class="form-label">Médicos</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos" id="medicos" value="{{medicos}}">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="enfermeros" class="form-label">Enfermeros</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{enfermeros}}" name="enfermeros" id="enfermeros">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="auxiliares" class="form-label">Auxiliares</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{auxiliares}}" name="auxiliares" id="auxiliares">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="respiradores" class="form-label">Respiradores</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="respiradores" id="respiradores" value="{{respiradores}}">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="tubos_ett" class="form-label">Tubos ETT</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{tubos_ett}}" name="tubos_ett" id="tubos_ett">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="primera" class="form-label">Medicación primera</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="primera" id="primera" value="{{primera}}">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="segunda" class="form-label">Medicación segunda</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{segunda}}" name="segunda" id="segunda">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="ingresos" class="form-label">Ingresos</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ingresos" id="ingresos" value="{{ingresos}}">
+            </div>
+          </div>
+
+          <div class="form-elem positive">
+            <label for="fallecidos" class="form-label">Fallecidos</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{fallecidos}}" name="fallecidos" id="fallecidos">
+            </div>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-2">Actualizar</button>
+        </div>
+      </form>
+    </div>
+
+
+   <!-- Optional JavaScript -->
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
