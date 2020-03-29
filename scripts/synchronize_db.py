@@ -18,11 +18,8 @@ def main(unused_argv):
   sqldb = sqlite.SQLiteDB(cfg.db.sqlite_path)
   sync = synchronizer.Synchronizer(shdb, sqldb)
   sync.sync_hospitales()
-  sync.sync_camas()
-  sync.sync_personal()
   sync.sync_insumos()
   sync.sync_medicaciones()
-  sync.sync_pacientes()
 
 
 if __name__ == "__main__":

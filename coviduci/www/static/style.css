@@ -69,6 +69,35 @@ html {
   text-align: center;
 }
 
+div.jumbotron {
+  background-color: white;
+}
+
 div.container {
   width: 80%;
+  text-align: center;
+  background-color: white;
+}
+
+table, th, td {
+  border: 1px solid black;
+  text-align: center;
+}
+th, td {
+  padding: 10px;
+}
+hr.title {
+  border: 5px solid green;
+  border-radius: 2px;
+}
+hr.separator {
+  border: 2px solid black;
+  border-radius: 1px;
+}
+hr.minor {
+  border-top: 1px dashed black;
+}
+
+div.form-row {
+  justify-content: center;
 }

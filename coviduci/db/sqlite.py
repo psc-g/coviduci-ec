@@ -16,185 +16,176 @@ class SQLiteDB:
     if os.path.exists(db_path):
       self._conn = sqlite3.connect(db_path)
     else:
+      logging.info('db_path: {}'.format(db_path))
       self._conn = sqlite3.connect(db_path)
-      self._create_table()
+      self._create_tables()
 
-  def _create_table(self):
+  def _create_tables(self):
     self._conn.execute(
       """CREATE TABLE hospitales 
-                                (id INTEGER NOT NULL PRIMARY KEY,
-                                 hospital TEXT UNIQUE)"""
-    )
-    self._conn.execute(
-      """CREATE TABLE camas
-                           (hospital TEXT, camas_total INTEGER,
-                            camas_usadas INTEGER, timestamp INTEGER)"""
-    )
-    self._conn.execute(
-      """CREATE TABLE personal
-                              (hospital TEXT, medicos INTEGER,
-                               enfermeros INTEGER, auxiliares INTEGER, timestamp INTEGER)"""
+                                (hospital TEXT NOT NULL,
+                                 c_uci INTEGER,
+                                 c_usadas INTEGER,
+                                 c_insatis INTEGER,
+                                 medicos INTEGER,
+                                 medicos_4 INTEGER,
+                                 medicos_c INTEGER,
+                                 enfermeros INTEGER,
+                                 enfermeros_4 INTEGER,
+                                 enfermeros_c INTEGER,
+                                 auxiliares INTEGER,
+                                 auxiliares_4 INTEGER,
+                                 auxiliares_c INTEGER,
+                                 ter_resp INTEGER,
+                                 ter_resp_4 INTEGER,
+                                 ter_resp_c INTEGER,
+                                 p_ingresos INTEGER,
+                                 p_alta INTEGER,
+                                 p_fallecidos INTEGER,
+                                 timestamp INTEGER)"""
     )
     self._conn.execute(
       """CREATE TABLE insumos
-                             (hospital TEXT, respiradores INTEGER,
-                              tubos_ett INTEGER, timestamp INTEGER)"""
+                             (hospital TEXT, n_a TEXT, adecuados TEXT,
+                              medios TEXT, criticos TEXT, nodisp TEXT,
+                              timestamp INTEGER)"""
     )
     self._conn.execute(
       """CREATE TABLE medicaciones
-                                  (hospital TEXT, primera INTEGER,
-                                   segunda INTEGER, tercera INTEGER, timestamp INTEGER)"""
-    )
-    self._conn.execute(
-      """CREATE TABLE pacientes (hospital TEXT, ingresos INTEGER, fallecidos INTEGER, timestamp INTEGER)"""
+                                  (hospital TEXT, n_a TEXT, adecuados TEXT,
+                                   medios TEXT, criticos TEXT, nodisp TEXT,
+                                   timestamp INTEGER)"""
     )
     self._conn.commit()
 
   def upsert_hospitales(
     self,
     hospital: str,
+    c_uci: int,
+    c_usadas: int,
+    c_insatis: int,
+    medicos: int,
+    medicos_4: int,
+    medicos_c: int,
+    enfermeros: int,
+    enfermeros_4: int,
+    enfermeros_c: int,
+    auxiliares: int,
+    auxiliares_4: int,
+    auxiliares_c: int,
+    ter_resp: int,
+    ter_resp_4: int,
+    ter_resp_c: int,
+    p_ingresos: int,
+    p_alta: int,
+    p_fallecidos: int,
+    timestamp: int,
   ):
     """Add or update a hospital."""
 
     # If not then add:
-    query = """INSERT INTO hospitales (hospital) VALUES ('{hospital}')"""
-    self._conn.execute(query.format(**locals()))
-    self._conn.commit()
-
-  def upsert_camas(
-    self,
-    hospital: str,
-    camas_total: int,
-    camas_usadas: int,
-    timestamp: int,
-  ):
-    """Add or update camas."""
-
-    # If not then add:
-    query = """INSERT INTO camas (hospital, camas_total, camas_usadas, timestamp)
-                           VALUES
-			   ('{hospital}', {camas_total}, {camas_usadas}, {timestamp})"""
-    self._conn.execute(query.format(**locals()))
-    self._conn.commit()
-
-  def upsert_personal(
-    self,
-    hospital: str,
-    medicos: int,
-    enfermeros: int,
-    auxiliares: int,
-    timestamp: int,
-  ):
-    """Add or update personal."""
-
-    # If not then add:
-    query = """INSERT INTO personal (hospital, medicos, enfermeros, auxiliares, timestamp)
-                           VALUES
-			   ('{hospital}', {medicos}, {enfermeros}, {auxiliares}, {timestamp})"""
+    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas, c_insatis,
+                                       medicos, medicos_4, medicos_c,
+                                       enfermeros, enfermeros_4, enfermeros_c,
+                                       auxiliares, auxiliares_4, auxiliares_c,
+                                       ter_resp, ter_resp_4, ter_resp_c,
+                                       p_ingresos, p_alta, p_fallecidos,
+                                       timestamp)
+                                       VALUES
+                                      ('{hospital}', {c_uci}, {c_usadas}, {c_insatis},
+                                       {medicos}, {medicos_4}, {medicos_c},
+                                       {enfermeros}, {enfermeros_4}, {enfermeros_c},
+                                       {auxiliares}, {auxiliares_4}, {auxiliares_c},
+                                       {ter_resp}, {ter_resp_4}, {ter_resp_c},
+                                       {p_ingresos}, {p_alta}, {p_fallecidos}, {timestamp})"""
     self._conn.execute(query.format(**locals()))
     self._conn.commit()
 
   def upsert_insumos(
     self,
     hospital: str,
-    respiradores: int,
-    tubos_ett: int,
+    n_a: str,
+    adecuados: str,
+    medios: str,
+    criticos: str,
+    nodisp: str,
     timestamp: int,
   ):
     """Add or update insumos."""
 
     # If not then add:
-    query = """INSERT INTO insumos (hospital, respiradores, tubos_ett, timestamp)
+    query = """INSERT INTO insumos (hospital, n_a, adecuados, medios, criticos,
+                                    nodisp, timestamp)
                            VALUES
-			   ('{hospital}', {respiradores}, {tubos_ett}, {timestamp})"""
+			   ('{hospital}', '{n_a}', '{adecuados}', '{medios}', '{criticos}',
+          '{nodisp}',{timestamp})"""
     self._conn.execute(query.format(**locals()))
     self._conn.commit()
 
   def upsert_medicaciones(
     self,
     hospital: str,
-    primera: int,
-    segunda: int,
+    n_a: str,
+    adecuados: str,
+    medios: str,
+    criticos: str,
+    nodisp: str,
     timestamp: int,
   ):
     """Add or update medicaciones."""
 
     # If not then add:
-    query = """INSERT INTO medicaciones (hospital, primera, segunda, timestamp)
+    query = """INSERT INTO medicaciones (hospital, n_a, adecuados, medios,
+                                         criticos, nodisp, timestamp)
                            VALUES
-			   ('{hospital}', {primera}, {segunda}, {timestamp})"""
+			   ('{hospital}', '{n_a}', '{adecuados}', '{medios}', '{criticos}',
+          '{nodisp}', {timestamp})"""
     self._conn.execute(query.format(**locals()))
     self._conn.commit()
 
-  def upsert_pacientes(
-    self,
-    hospital: str,
-    ingresos: int,
-    fallecidos: int,
-    timestamp: int,
-  ):
-    """Add or update pacientes."""
-
-    # If not then add:
-    query = """INSERT INTO pacientes (hospital, ingresos, fallecidos, timestamp)
-                           VALUES
-			   ('{hospital}', {ingresos}, {fallecidos}, {timestamp})"""
-    self._conn.execute(query.format(**locals()))
-    self._conn.commit()
-
-  def update_data(self, data):
-    hospital = data['hospital']
+  def update_data(self, **kwargs):
     query = """SELECT count(hospital) as n_hospital FROM hospitales
-               WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
+               WHERE hospital = '{hospital}'"""
+    res = pd.read_sql_query(query.format(**kwargs), self._conn)
     if res.iloc[0]['n_hospital'] == 0:
       raise ValueError(f"Hospital {hospital} does not exist.")
 
     ts = int(time.time())
-    table_modified = False
-    # Camas update
-    query = """SELECT camas_total, camas_usadas FROM camas WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
-    if (res.iloc[0]['camas_total'] != data['camas_total'] or
-        res.iloc[0]['camas_usadas'] != data['camas_usadas']):
-      query = """INSERT INTO camas (camas_total, camas_usadas, timestamp) VALUES ({}, {}, {})"""
-      self._conn.execute(query.format(data['camas_total'], data['camas_usadas'], ts))
-      table_modified = True
-    # Personal update
-    query = """SELECT medicos, enfermeros, auxiliares FROM personal WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
-    if (res.iloc[0]['medicos'] != data['medicos'] or
-        res.iloc[0]['enfermeros'] != data['enfermeros'] or
-        res.iloc[0]['auxiliares'] != data['auxiliares']):
-      query = """INSERT INTO personal (medicos, enfermeros, auxiliares, timestamp) VALUES ({}, {}, {})"""
-      self._conn.execute(query.format(data['medicos'], data['enfermeros'], data['auxiliares'], ts))
-      table_modified = True
+    # Hospitales update
+    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas, c_insatis,
+                                       medicos, medicos_4, medicos_c,
+                                       enfermeros, enfermeros_4, enfermeros_c,
+                                       auxiliares, auxiliares_4, auxiliares_c,
+                                       ter_resp, ter_resp_4, ter_resp_c,
+                                       p_ingresos, p_alta,
+                                       p_fallecidos, timestamp)
+                                       VALUES
+                                      ('{hospital}', {c_uci}, {c_usadas}, {c_insatis},
+                                       {medicos}, {medicos_4}, {medicos_c},
+                                       {enfermeros}, {enfermeros_4}, {enfermeros_c},
+                                       {auxiliares}, {auxiliares_4}, {auxiliares_c},
+                                       {ter_resp}, {ter_resp_4}, {ter_resp_c},
+                                       {p_ingresos}, {p_alta}, {p_fallecidos},
+                                       {timestamp})"""
+    self._conn.execute(query.format(timestamp=ts, **kwargs))
     # Insumos update
-    query = """SELECT respiradores, tubos_ett FROM insumos WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
-    if (res.iloc[0]['respiradores'] != data['respiradores'] or
-        res.iloc[0]['tubos_ett'] != data['tubos_ett']):
-      query = """INSERT INTO insumos (respiradores, tubos_ett, timestamp) VALUES ({}, {}, {})"""
-      self._conn.execute(query.format(data['respiradores'], data['tubos_ett'], ts))
-      table_modified = True
+    for insumo in ['respiradores', 'tubos_ett', 'mascarillas', 'prot_personal']:
+      query = """INSERT INTO insumos (hospital, {status}, timestamp)
+                 VALUES ('{hospital}', '{insumo}', {timestamp})"""
+      self._conn.execute(query.format(status=kwargs[insumo], insumo=insumo,
+                         timestamp=ts, **kwargs))
     # Medicaciones update
-    query = """SELECT primera, segunda FROM medicaciones WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
-    if (res.iloc[0]['primera'] != data['primera'] or
-        res.iloc[0]['segunda'] != data['segunda']):
-      query = """INSERT INTO medicaciones (primera, segunda, timestamp) VALUES ({}, {}, {})"""
-      self._conn.execute(query.format(data['primera'], data['segunda'], ts))
-      table_modified = True
-    # Pacientes update
-    query = """SELECT ingresos, fallecidos FROM pacientes WHERE hospital = '{}'"""
-    res = pd.read_sql_query(query.format(hospital), self._conn)
-    if (res.iloc[0]['ingresos'] != data['ingresos'] or
-        res.iloc[0]['fallecidos'] != data['fallecidos']):
-      query = """INSERT INTO pacientes (ingresos, fallecidos, timestamp) VALUES ({}, {}, {})"""
-      self._conn.execute(query.format(data['ingresos'], data['fallecidos'], ts))
-      table_modified = True
-    if table_modified:
-      self._conn.commit()
+    for medicacion in ['midazolam', 'propofol', 'dexmedetomidina', 'fentanilo',
+                       'rocuronio', 'norepinefrina', 'dopamina', 'dobutamina',
+                       'antivirales', 'azitromicina', 'ceftriaxone',
+                       'ampicilina_sulbactam', 'piperazilina', 'enoxaheparina',
+                       'metilprednisolona', 'dexametasona']:
+      query = """INSERT INTO medicaciones (hospital, {status}, timestamp)
+                 VALUES ('{hospital}', '{medicacion}', {timestamp})"""
+      self._conn.execute(query.format(status=kwargs[medicacion],
+                                      medicacion=medicacion, timestamp=ts,
+                                      **kwargs))
+    self._conn.commit()
 
   def get_data(self, table):
     """Returns a pandas DF of data."""

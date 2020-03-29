@@ -3,70 +3,89 @@
 {% block links %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/style.css">
 {% end %}
 
 {% block content %}
 <div class="container">
-    <h1>Camas</h1>
-    <table id="camas" class=" table table-hover table-bordered" style="width:100%">
-        <thead>
-        <tr>
-            <th>Hospital</th>
-            <th>Total</th>
-            <th>Usadas</th>
-        </tr>
-        </thead>
+    <h1>Hospital {{hospital}}</h1>
+    <h4>Última actualización {{last_update}}</h4>
+
+    <hr class="title">
+
+    <h2><font color="red">Elementos no disponibles</font></h2>
+      {% for item in nodisp %}
+        <p><h3>{{item}}</h3></p>
+      {% end %}
+
+    <hr class="separator">
+
+    <h2><font color="red">Elementos en estado crítico</font></h2>
+      {% for item in criticos %}
+        <p><h3>{{item}}</h3></p>
+      {% end %}
+
+    <hr class="separator">
+
+    <h2>Estadísticas de pacientes</h2>
+    <table style="width:100%">
+      <tr><th>Ingresados</th><th>De alta</th><th>Fallecidos</th></tr>
+      <tr><th>{{p_ingresos}}</th><th>{{p_alta}}</th><th>{{p_fallecidos}}</th>
     </table>
-</div>
-<div class="container">
-    <h1>Personal</h1>
-    <table id="personal" class=" table table-hover table-bordered" style="width:100%">
-        <thead>
-        <tr>
-            <th>Hospital</th>
-            <th>Méd.</th>
-            <th>Enf.</th>
-            <th>Aux.</th>
-        </tr>
-        </thead>
+
+    <hr class="separator">
+
+    <h2>Estadísticas de camas</h2>
+    <table style="width:100%">
+      <tr><th>Total UCI</th><th>En uso</th><th>Demanda insatisfecha</th></tr>
+      <th>{{c_uci}}</th>
+      <th>{{c_usadas}}</th>
+      <th>{{c_insatis}}</th>
     </table>
-</div>
-<div class="container">
-    <h1>Insumos</h1>
-    <table id="insumos" class=" table table-hover table-bordered" style="align:center; width:100%">
-        <thead>
-        <tr>
-            <th>Hospital</th>
-            <th>Respiradores</th>
-            <th>Tubos ETT</th>
-        </tr>
-        </thead>
+
+    <hr class="separator">
+
+    <h2>Estadísticas de personal</h2>
+    <table style="width:100%">
+      <tr>
+          <th>Médicos<br>(en cuarentena / Covid+)</th>
+          <th>Enfermeros<br>(en cuarentena / Covid+)</th>
+      </tr>
+      <tr>
+          <th>{{medicos}} ({{medicos_4}} / {{medicos_c}})</th>
+          <th>{{enfermeros}} ({{enfermeros_4}} / {{enfermeros_c}})</th>
+      </tr>
+      <tr><th></th><th></th></tr>
+      <tr>
+          <th>Auxiliares<br>(en cuarentena / Covid+)</th>
+          <th>Terapistas respiratorios<br>(en cuarentena / Covid+)</th>
+      </tr>
+      <tr>
+          <th>{{auxiliares}} ({{auxiliares_4}} / {{auxiliares_c}})</th>
+          <th>{{ter_resp}} ({{ter_resp_4}} / {{ter_resp_c}})</th>
+      </tr>
     </table>
-</div>
-<div class="container">
-    <h1>Medicaciones</h1>
-    <table id="medicaciones" class=" table table-hover table-bordered" style="width:100%">
-        <thead>
-        <tr>
-            <th>Hospital</th>
-            <th>1era</th>
-            <th>2da</th>
-        </tr>
-        </thead>
-    </table>
-</div>
-<div class="container">
-    <h1>Pacientes</h1>
-    <table id="pacientes" class=" table table-hover table-bordered" style="width:100%">
-        <thead>
-        <tr>
-            <th>Hospital</th>
-            <th>Ingresados</th>
-            <th>Fallecidos</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+
+    <hr class="separator">
+
+    <h2>Elementos en estado medio</h2>
+      {% for item in medios %}
+        <p>{{item}}</p>
+      {% end %}
+
+    <hr class="separator">
+
+    <h2>Elementos en estado adecuado</h2>
+      {% for item in adecuados %}
+        <p>{{item}}</p>
+      {% end %}
+
+    <hr class="separator">
+
+    <h2>Elementos sin información</h2>
+      {% for item in n_a %}
+        <p>{{item}}</p>
+      {% end %}
 
 {% end %}
 

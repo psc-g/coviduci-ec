@@ -1,10 +1,10 @@
 """This will populate the database from the google sheet."""
 from absl import app
 from absl import flags
-from icubam import config
-from icubam.db import sqlite
-from icubam.db import gsheets
-from icubam.db import synchronizer
+from coviduci import config
+from coviduci.db import sqlite
+from coviduci.db import gsheets
+from coviduci.db import synchronizer
 
 flags.DEFINE_string("config", "resources/config.toml", "Config file.")
 flags.DEFINE_string("dotenv_path", "resources/.env", "Config file.")

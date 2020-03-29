@@ -1,14 +1,14 @@
-# This file needs to be modified and placed in 'resources/' the parent directory.
+# This file needs to be modified and placed in 'resources/' in the directory above this one.
 # Keys
 title = "My TOML Config"
 
 # Tables
 [sms]
-origin = "COVIDUCI"
+origin = "YOUR_SERVICE"
 carrier = "TW"
 
 [db]
-sqlite_path = "coviduci.db"
+sqlite_path = "your_database.db"
 
 [server]
   [server.dev]
@@ -16,7 +16,7 @@ sqlite_path = "coviduci.db"
   base_url = "https://localhost:8888/"
   [server.prod]
   port = 443
-  base_url = "https://www.coviduci.ec/"
+  base_url = "https://www.yourwebsite.com/"
 
 [scheduler]
   [scheduler.prod]

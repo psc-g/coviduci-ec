@@ -19,14 +19,12 @@ def get_color(value):
 class HomeHandler(base.BaseHandler):
 
   ROUTE = '/'
-  POPUP_TEMPLATE = 'popup.html'
   CLUSTER_KEY = 'hospital'
 
   def initialize(self, config, db):
     self.config = config
     self.db = db
     loader = tornado.template.Loader(self.get_template_path())
-    self.popup_template = loader.load(self.POPUP_TEMPLATE)
 
   def get_city_data(self):
     icus_df = self.db.get_icus()

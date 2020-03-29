@@ -1,44 +1,81 @@
-<!DOCTYPE html>
-<html lang="es" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>COVIDU-EC</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/style.css">
-  </head>
+{% extends "base.html" %}
 
-  <body>
-    <div class='main-content'>
+{% block links %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/style.css">
+{% end %}
 
+{% block content %}
       <h1>Hospital {{hospital}}</h1>
 
       <p>Última actualización: {{last_update}}</p>
 
+      <hr class="title">
+
       <form action="/update" method="POST">
         <input class="form-control" type="hidden"
          name="hospital" id="hospital" value="{{hospital}}">
+
+        <h2>Estadísticas de pacientes</h2>
         <div class="form-row">
           <div class="form-elem positive">
-            <label for="camas_total" class="form-label">Camas total</label>
+            <label for="p_ingresos" class="form-label">Pacientes ingresados</label>
             <div>
               <input
               class="form-control" type="number"
-              name="camas_total" id="camas_total" value="{{camas_total}}">
+              name="p_ingresos" id="p_ingresos" value="{{p_ingresos}}">
             </div>
           </div>
-
           <div class="form-elem positive">
-            <label for="camas_usadas" class="form-label">Camas usadas</label>
+            <label for="p_alta" class="form-label">Pacientes dados de alta</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_alta" id="p_alta" value="{{p_alta}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_fallecidos" class="form-label">Pacientes fallecidos</label>
             <div>
               <input
                 class="form-control" type="number"
-                value="{{camas_usadas}}" name="camas_usadas" id="camas_usadas">
+                value="{{p_fallecidos}}" name="p_fallecidos" id="p_fallecidos">
             </div>
           </div>
         </div>
 
+        <hr class="separator">
+        <h2>Estadísticas de camas</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="c_uci" class="form-label">Total camas en UCI</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="c_uci" id="c_uci" value="{{c_uci}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="c_usadas" class="form-label">Camas usadas</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{c_usadas}}" name="c_usadas" id="c_usadas">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="c_insatis" class="form-label">Demanda insatisfecha</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{c_insatis}}" name="c_insatis" id="c_insatis">
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator">
+        <h2>Estadísticas de personal</h2>
         <div class="form-row">
           <div class="form-elem positive">
             <label for="medicos" class="form-label">Médicos</label>
@@ -48,7 +85,24 @@
               name="medicos" id="medicos" value="{{medicos}}">
             </div>
           </div>
-
+          <div class="form-elem positive">
+            <label for="medicos_4" class="form-label">Médicos en cuarentena</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos_4" id="medicos_4" value="{{medicos_4}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="medicos_c" class="form-label">Médicos Covid+</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos_c" id="medicos_c" value="{{medicos_c}}">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-elem positive">
             <label for="enfermeros" class="form-label">Enfermeros</label>
             <div>
@@ -57,7 +111,24 @@
                 value="{{enfermeros}}" name="enfermeros" id="enfermeros">
             </div>
           </div>
-
+          <div class="form-elem positive">
+            <label for="enfermeros_4" class="form-label">Enfermeros en cuarentena</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{enfermeros_4}}" name="enfermeros_4" id="enfermeros_4">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="enfermeros_c" class="form-label">Enfermeros Covid+</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{enfermeros_c}}" name="enfermeros_c" id="enfermeros_c">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-elem positive">
             <label for="auxiliares" class="form-label">Auxiliares</label>
             <div>
@@ -66,64 +137,340 @@
                 value="{{auxiliares}}" name="auxiliares" id="auxiliares">
             </div>
           </div>
+          <div class="form-elem positive">
+            <label for="auxiliares_4" class="form-label">Auxiliares en cuarentena</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{auxiliares_4}}" name="auxiliares_4" id="auxiliares_4">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="auxiliares_c" class="form-label">Auxiliares Covid+</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{auxiliares_c}}" name="auxiliares_c" id="auxiliares_c">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="ter_resp" class="form-label">Terapistas respiratorios</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp" id="ter_resp" value="{{ter_resp}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ter_resp_4" class="form-label">Terapistas respiratorios<br>en cuarentena</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp_4" id="ter_resp_4" value="{{ter_resp_4}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ter_resp_c" class="form-label">Terapistas respiratorios<br>Covid+</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp_c" id="ter_resp_c" value="{{ter_resp_c}}">
+            </div>
+          </div>
         </div>
 
+        <hr class="separator">
+        <h2>Estadísticas de insumos</h2>
         <div class="form-row">
           <div class="form-elem positive">
             <label for="respiradores" class="form-label">Respiradores</label>
             <div>
-              <input
-              class="form-control" type="number"
-              name="respiradores" id="respiradores" value="{{respiradores}}">
+              <select id="respiradores" name="respiradores">
+                <option value="adecuados" {% if respiradores == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if respiradores == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if respiradores == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if respiradores == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if respiradores == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
-
           <div class="form-elem positive">
             <label for="tubos_ett" class="form-label">Tubos ETT</label>
             <div>
-              <input
-                class="form-control" type="number"
-                value="{{tubos_ett}}" name="tubos_ett" id="tubos_ett">
+              <select id="tubos_ett" name="tubos_ett">
+                <option value="adecuados" {% if tubos_ett == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if tubos_ett == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if tubos_ett == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if tubos_ett == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if tubos_ett == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="mascarillas" class="form-label">Mascarillas</label>
+            <div>
+              <select id="mascarillas" name="mascarillas">
+                <option value="adecuados" {% if mascarillas == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if mascarillas == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if mascarillas == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if mascarillas == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if mascarillas == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="prot_personal" class="form-label">Protección Personal</label>
+            <div>
+              <select id="prot_personal" name="prot_personal">
+                <option value="adecuados" {% if prot_personal == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if prot_personal == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if prot_personal == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if prot_personal == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if prot_personal == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
         </div>
 
+        <hr class="separator">
+        <h2>Estadísticas de medicamentos</h2>
         <div class="form-row">
           <div class="form-elem positive">
-            <label for="primera" class="form-label">Medicación primera</label>
+            <label for="midazolam" class="form-label">Midazolam</label>
             <div>
-              <input
-              class="form-control" type="number"
-              name="primera" id="primera" value="{{primera}}">
+              <select id="midazolam" name="midazolam">
+                <option value="adecuados" {% if midazolam == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if midazolam == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if midazolam == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if midazolam == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if midazolam == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
-
           <div class="form-elem positive">
-            <label for="segunda" class="form-label">Medicación segunda</label>
+            <label for="propofol" class="form-label">Propofol</label>
             <div>
-              <input
-                class="form-control" type="number"
-                value="{{segunda}}" name="segunda" id="segunda">
+              <select id="propofol" name="propofol">
+                <option value="adecuados" {% if propofol == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if propofol == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if propofol == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if propofol == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if propofol == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dexmedetomidina" class="form-label">Dexmedetomidina</label>
+            <div>
+              <select id="dexmedetomidina" name="dexmedetomidina">
+                <option value="adecuados" {% if dexmedetomidina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if dexmedetomidina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if dexmedetomidina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if dexmedetomidina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if dexmedetomidina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
         </div>
 
+        <hr class="minor">
         <div class="form-row">
           <div class="form-elem positive">
-            <label for="ingresos" class="form-label">Ingresos</label>
+            <label for="fentanilo" class="form-label">Fentanilo</label>
             <div>
-              <input
-              class="form-control" type="number"
-              name="ingresos" id="ingresos" value="{{ingresos}}">
+              <select id="fentanilo" name="fentanilo">
+                <option value="adecuados" {% if fentanilo == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if fentanilo == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if fentanilo == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if fentanilo == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if fentanilo == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
+        </div>
 
+        <hr class="minor">
+        <div class="form-row">
           <div class="form-elem positive">
-            <label for="fallecidos" class="form-label">Fallecidos</label>
+            <label for="rocuronio" class="form-label">Rocuronio</label>
             <div>
-              <input
-                class="form-control" type="number"
-                value="{{fallecidos}}" name="fallecidos" id="fallecidos">
+              <select id="rocuronio" name="rocuronio">
+                <option value="adecuados" {% if rocuronio == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if rocuronio == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if rocuronio == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if rocuronio == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if rocuronio == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="norepinefrina" class="form-label">Norepinefrina</label>
+            <div>
+              <select id="norepinefrina" name="norepinefrina">
+                <option value="adecuados" {% if norepinefrina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if norepinefrina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if norepinefrina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if norepinefrina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if norepinefrina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dopamina" class="form-label">Dopamina</label>
+            <div>
+              <select id="dopamina" name="dopamina">
+                <option value="adecuados" {% if dopamina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if dopamina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if dopamina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if dopamina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if dopamina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dobutamina" class="form-label">Dobutamina</label>
+            <div>
+              <select id="dobutamina" name="dobutamina">
+                <option value="adecuados" {% if dobutamina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if dobutamina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if dobutamina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if dobutamina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if dobutamina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="antivirales" class="form-label">Antivirales</label>
+            <div>
+              <select id="antivirales" name="antivirales">
+                <option value="adecuados" {% if antivirales == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if antivirales == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if antivirales == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if antivirales == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if antivirales == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="azitromicina" class="form-label">Azitromicina</label>
+            <div>
+              <select id="azitromicina" name="azitromicina">
+                <option value="adecuados" {% if azitromicina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if azitromicina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if azitromicina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if azitromicina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if azitromicina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ceftriaxone" class="form-label">Ceftriaxone</label>
+            <div>
+              <select id="ceftriaxone" name="ceftriaxone">
+                <option value="adecuados" {% if ceftriaxone == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if ceftriaxone == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if ceftriaxone == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if ceftriaxone == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if ceftriaxone == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ampicilina_sulbactam" class="form-label">Ampicilina-sulbactam</label>
+            <div>
+              <select id="ampicilina_sulbactam" name="ampicilina_sulbactam">
+                <option value="adecuados" {% if ampicilina_sulbactam == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if ampicilina_sulbactam == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if ampicilina_sulbactam == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if ampicilina_sulbactam == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if ampicilina_sulbactam == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="piperazilina" class="form-label">Piperazilina</label>
+            <div>
+              <select id="piperazilina" name="piperazilina">
+                <option value="adecuados" {% if piperazilina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if piperazilina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if piperazilina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if piperazilina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if piperazilina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="enoxaheparina" class="form-label">Enoxaheparina</label>
+            <div>
+              <select id="enoxaheparina" name="enoxaheparina">
+                <option value="adecuados" {% if enoxaheparina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if enoxaheparina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if enoxaheparina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if enoxaheparina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if enoxaheparina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="metilprednisolona" class="form-label">Metilprednisolona</label>
+            <div>
+              <select id="metilprednisolona" name="metilprednisolona">
+                <option value="adecuados" {% if metilprednisolona == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if metilprednisolona == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if metilprednisolona == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if metilprednisolona == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if metilprednisolona == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dexametasona" class="form-label">Dexametasona</label>
+            <div>
+              <select id="dexametasona" name="dexametasona">
+                <option value="adecuados" {% if dexametasona == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if dexametasona == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if dexametasona == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if dexametasona == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if dexametasona == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="hidroxicloroquina" class="form-label">Hidroxicloroquina</label>
+            <div>
+              <select id="hidroxicloroquina" name="enoxaheparina">
+                <option value="adecuados" {% if hidroxicloroquina == 'adecuados' %}selected{% end %}>Adecuado</option>
+                <option value="medios" {% if hidroxicloroquina == 'medios' %}selected{% end %}>Medio</option>
+                <option value="criticos" {% if hidroxicloroquina == 'criticos' %}selected{% end %}>Crítico</option>
+                <option value="nodisp" {% if hidroxicloroquina == 'nodisp' %}selected{% end %}>No disponible</option>
+                <option value="n_a" {% if hidroxicloroquina == 'n_a' %}selected{% end %}>Sin información</option>
+              </select>
             </div>
           </div>
         </div>
@@ -134,11 +481,4 @@
       </form>
     </div>
 
-
-   <!-- Optional JavaScript -->
-   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>
+{% end %}

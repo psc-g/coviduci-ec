@@ -29,7 +29,7 @@ class SheetsDB:
     self.sheet = self.service.spreadsheets()
 
   def get_sheet_as_pd(self, sheet_name):
-    """Returns a pandas DF of bed counts."""
+    """Returns a pandas DF of data."""
     result = (
       self.sheet.values()
       .get(spreadsheetId=self._sheet_id, range=sheet_name)

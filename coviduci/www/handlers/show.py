@@ -6,29 +6,26 @@ from coviduci.www.handlers import home
 from coviduci.www import token
 
 
-class DataJson(tornado.web.RequestHandler):
-    ROUTE = '/data'
-
-    def initialize(self, db):
-        self.db = db
-
-    def get(self):
-        data = self.db.get_data('hospitales')
-        data = data.set_index('hospital')
-        for table in ['camas', 'personal', 'insumos', 'medicaciones', 'pacientes']:
-          table_data = self.db.get_data(table)
-          data = data.join(table_data.set_index('hospital'), rsuffix='.{}'.format(table))
-        data = data.reset_index()
-        data = data.to_dict(orient='records')
-        self.write({"data": data})
-
 
 class ShowHandler(base.BaseHandler):
-    ROUTE = '/show'
+  ROUTE = '/show'
+  QUERY_ARG = 'id'
 
-    def initialize(self, db):
-        self.db = db
+  def initialize(self, db):
+    self.db = db
 
-    async def get(self):
-        """Serves the page with a form to be filled by the user."""
-        self.render("show.html")
+  async def get(self):
+    """Serves the page with the data for a specific hospital."""
+    user_token = self.get_query_argument(self.QUERY_ARG)
+    # TODO(psc): actually encode/decode this!
+    #input_data = self.token_encoder.decode(user_token)
+    input_data = {'hospital': user_token}
+    if input_data is None:
+      return self.redirect('/error')
+
+    data = self._get_data(input_data['hospital'], aggregated=True)
+    data.update(input_data)
+
+    logging.info('Data to show: {}'.format(data))
+    self.set_secure_cookie(self.COOKIE, user_token)
+    self.render("show.html", **data)

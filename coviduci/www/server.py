@@ -10,6 +10,7 @@ from coviduci.www import token
 from coviduci.www.handlers import db
 from coviduci.www.handlers import home
 from coviduci.www.handlers import mind
+from coviduci.www.handlers import research
 from coviduci.www.handlers import show
 from coviduci.www.handlers import update
 
@@ -24,6 +25,7 @@ class WWWServer:
     self.token_encoder = token.TokenEncoder(self.config)
     self.writing_queue = queues.Queue()
     self.db = sqlite.SQLiteDB(self.config.db.sqlite_path)
+    logging.info('Opened db {}'.format(self.config.db.sqlite_path))
     self.make_app()
     self.callbacks = [
       queue_writer.QueueWriter(self.writing_queue, self.db)
@@ -40,9 +42,9 @@ class WWWServer:
       token_encoder=self.token_encoder)
     self.add_handler(home.HomeHandler, config=self.config, db=self.db)
     self.add_handler(show.ShowHandler, db=self.db)
-    self.add_handler(show.DataJson, db=self.db)
     self.add_handler(db.DBHandler, db=self.db)
     self.add_handler(mind.MindHandler)
+    self.add_handler(research.ResearchHandler)
     self.routes.append(
       (r"/static/(.*)",
       tornado.web.StaticFileHandler,

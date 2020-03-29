@@ -9,6 +9,6 @@ class QueueWriter:
   async def process(self):
     async for item in self.queue:
       try:
-        self.db.update_data(item)
+        self.db.update_data(**item)
       finally:
         self.queue.task_done()

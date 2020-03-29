@@ -1,7 +1,7 @@
 from absl import app
 from absl import flags
-from icubam.db import sqlite
-from icubam import config
+from coviduci.db import sqlite
+from coviduci import config
 
 flags.DEFINE_string('config', 'resources/config.toml', 'Config file.')
 flags.DEFINE_enum('mode', 'dev', ['prod', 'dev'], 'Run mode.')
