@@ -50,6 +50,7 @@ class WWWServer:
         admin.AddHospitalHandler, db=self.db, queue=self.writing_queue,
         token_encoder=self.token_encoder)
     self.add_handler(admin.ListHospitalsHandler, db=self.db)
+    self.add_handler(admin.AllDataHandler, db=self.db)
     self.routes.append(
       (r"/static/(.*)",
       tornado.web.StaticFileHandler,

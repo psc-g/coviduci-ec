@@ -7,7 +7,6 @@ from coviduci.www.handlers import home
 from coviduci.www import token
 
 
-
 class ShowHandler(base.BaseHandler):
   ROUTE = '/show'
 
@@ -26,6 +25,5 @@ class ShowHandler(base.BaseHandler):
     data.update(input_data)
     data['display_name'] = self.db.get_display_name(data['user'])
 
-    logging.info('Data to show: {}'.format(data))
     self.set_secure_cookie(self.COOKIE, user)
     self.render('show.html', **data)

@@ -21,7 +21,7 @@
                 <li class="nav-item"> <!-- active">//-->
                     <a class="nav-link" href="\">Inicio <span class="sr-only">(current)</span></a>
                 </li>
-                {% if user != 'none' %}
+                {% if user != 'none'  and user != 'admin' and user != 'ministerio' %}
                   <li class="nav-item">
                       <a class="nav-link" href="\show">Datos</a>
                   </li>
@@ -33,16 +33,23 @@
                   <li class="nav-item">
                       <a class="nav-link" href="\add_hospital">Agregar hospital</a>
                   </li>
+                {% end %}
+                {% if user == 'admin' or user == 'ministerio' %}
                   <li class="nav-item">
                       <a class="nav-link" href="\list_hospitals">Lista de hospitales</a>
                   </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="\datos_completos">Datos completos</a>
+                  </li>
                 {% end %}
+                {% if user != 'admin' %}
                 <li class="nav-item">
                     <a class="nav-link" href="\investigacion">Investigación</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="\mindfulness">Mindfulness</a>
                 </li>
+                {% end %}
                 {% if user != 'none' %}
                   <li class="nav-item">
                       <a class="nav-link" href="\logout">Salir</a>
