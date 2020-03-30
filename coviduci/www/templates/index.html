@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 
 {% block links %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/style.css">
 {% end %}
 
 {% block content %}
@@ -9,7 +10,7 @@
   <h1>CovidUCI-EC</h1>
   <hr class="title">
   <h4>
-  <p>Esta es una plataforma para actualización a tiempo real de las estadísticas de las unidades de cuidados intensivos, relacionados con la pandemia de Covid-19.</p>
+  <p>Bienvenido, administrador del hospital {{display_name}}, esta es una plataforma para actualización a tiempo real de las estadísticas de las unidades de cuidados intensivos, relacionados con la pandemia de Covid-19.</p>
   <hr class="minor">
   <p>Selecciona una de las opciones en la barra de menú ubicada en la parte superior de esta página.</p>
   </h4>

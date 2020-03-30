@@ -13,10 +13,13 @@ class Config:
   Upper keys are for the .env secrets and lower keys for the toml file.
   """
 
-  # All the secret keys
+  # All the secret environment keys.
   ENV_KEYS = [
-    'SHEET_ID', 'TOKEN_LOC', 'SMS_KEY', 'SECRET_COOKIE', 'JWT_SECRET',
-    'GOOGLE_API_KEY', 'MB_KEY', 'NX_KEY', 'NX_API', 'TW_KEY', 'TW_API']
+    'SHEET_ID',  # The Google sheets ID.
+    'TOKEN_LOC',  # Path to the token.pickle file.
+    'SECRET_COOKIE',  # Secret cookie for login.
+    'JWT_SECRET',  # Secret for encoding/decoding tokens.
+  ]
 
   def __init__(self, toml_config, mode='dev', env_path=None):
     """If env_path is None, it will try to find it by itself."""

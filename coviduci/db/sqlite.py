@@ -3,15 +3,51 @@ from absl import logging
 import os
 import sqlite3
 import time
+import tornado.escape
 import pandas as pd
+
+
+def unescape_html(s):
+  """Unescapes an HTML-escaped string, returns username and display name."""
+  replacements = [
+      ('+', (' ', '_')),
+      ('%C3%81', ('Á', 'A')),
+      ('%C3%A1', ('á', 'a')),
+      ('%C3%89', ('É', 'E')),
+      ('%C3%A9', ('é', 'e')),
+      ('%C3%8D', ('Í', 'I')),
+      ('%C3%AD', ('í', 'i')),
+      ('%C3%93', ('Ó', 'O')),
+      ('%C3%B3', ('ó', 'o')),
+      ('%C3%9A', ('Ú', 'U')),
+      ('%C3%BA', ('ú', 'u')),
+      ('%C3%84', ('Ä', 'A')),
+      ('%C3%A4', ('ä', 'a')),
+      ('%C3%8B', ('Ë', 'E')),
+      ('%C3%AB', ('ë', 'e')),
+      ('%C3%8F', ('Ï', 'I')),
+      ('%C3%AF', ('ï', 'i')),
+      ('%C3%96', ('Ö', 'O')),
+      ('%C3%B6', ('ö', 'o')),
+      ('%C3%9C', ('Ü', 'U')),
+      ('%C3%BC', ('ü', 'u')),
+  ]
+  display_name = s
+  hospital = s
+  for r in replacements:
+    display_name = display_name.replace(r[0], r[1][0])
+    hospital = hospital.replace(r[0], r[1][1])
+  hospital = hospital.lower()
+  return hospital, display_name
 
 
 class SQLiteDB:
   """Wraps SQLite DB for bed counts."""
 
-  def __init__(self, db_path: str):
+  def __init__(self, db_path, token_encoder):
     """Given a token file and a sheet id, loads the sheet to be queried."""
     self._db_path = db_path
+    self.token_encoder = token_encoder
 
     if os.path.exists(db_path):
       self._conn = sqlite3.connect(db_path)
@@ -144,11 +180,25 @@ class SQLiteDB:
     self._conn.commit()
 
   def update_data(self, **kwargs):
-    query = """SELECT count(hospital) as n_hospital FROM hospitales
-               WHERE hospital = '{hospital}'"""
-    res = pd.read_sql_query(query.format(**kwargs), self._conn)
-    if res.iloc[0]['n_hospital'] == 0:
-      raise ValueError(f"Hospital {hospital} does not exist.")
+    if 'user' not in kwargs:
+      return
+    if kwargs['user'] == 'admin':
+      if 'display_name' not in kwargs or 'clave' not in kwargs:
+        return
+      hospital, display_name = unescape_html(kwargs['display_name'])
+      add_user = """INSERT INTO users (name, login, display_name) VALUES
+                                      ('{hospital}', '{clave}',
+                                       '{display_name}')"""
+      self._conn.execute(add_user.format(
+          hospital=hospital, clave=self.token_encoder.encode(kwargs['clave']),
+          display_name=display_name))
+      kwargs['hospital'] = hospital
+    else:
+      query = """SELECT count(hospital) as n_hospital FROM hospitales
+                 WHERE hospital = '{hospital}'"""
+      res = pd.read_sql_query(query.format(**kwargs), self._conn)
+      if res.iloc[0]['n_hospital'] == 0:
+        raise ValueError(f"Hospital {hospital} does not exist.")
 
     ts = int(time.time())
     # Hospitales update
@@ -198,3 +248,24 @@ class SQLiteDB:
   def execute(self, query):
     self._conn.execute(query)
     self._conn.commit()
+
+  def check_login(self, encoded_login):
+    res = pd.read_sql_query(
+        """SELECT * FROM users WHERE login = '{}'""".format(encoded_login),
+        self._conn)
+    if res.empty:
+      return None
+    else:
+      return res.iloc[0]['name']
+
+  def get_display_name(self, user):
+    res = pd.read_sql_query(
+        """SELECT * FROM users WHERE name = '{}'""".format(user), self._conn)
+    if res.empty:
+      return None
+    else:
+      return res.iloc[0]['display_name']
+
+  def get_hospitals(self):
+    res = pd.read_sql_query('SELECT display_name FROM users', self._conn)
+    return res['display_name'].to_list()

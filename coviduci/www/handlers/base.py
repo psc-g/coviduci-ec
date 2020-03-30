@@ -51,7 +51,7 @@ class BaseHandler(tornado.web.RequestHandler):
                        'hidroxicloroquina'],
   }
   REQUIRED_CATEGORIES = ['n_a', 'adecuados', 'medios', 'criticos', 'nodisp']
-  COOKIE = 'id'
+  COOKIE = 'user'
 
   def _time_ago(self, ts) -> str:
     if ts is None:

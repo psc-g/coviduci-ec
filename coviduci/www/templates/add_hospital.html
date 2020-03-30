@@ -1,0 +1,487 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/style.css">
+{% end %}
+
+{% block content %}
+      <h1>Agregue un nuevo hospital</h1>
+
+      <hr class="title">
+
+      <form action="/add_hospital" method="POST">
+        <label for="display_name" class="form-label">Hospital:</label>
+        <input class="form-control" type="text"
+         name="display_name" id="display_name" value="" placeholder="Ingrese el nombre del hospital aquí">
+        <label for="clave" class="form-label">Clave de ingreso</label>
+        <input class="form-control" type="password" name="clave" id="clave">
+        <input class="form-control" type="hidden"
+         name="user" id="user" value="{{user}}">
+
+        <h2>Estadísticas de pacientes</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="p_ingresos" class="form-label">Pacientes ingresados</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_ingresos" id="p_ingresos" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_alta" class="form-label">Pacientes dados de alta</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_alta" id="p_alta" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_fallecidos" class="form-label">Pacientes fallecidos</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="p_fallecidos" id="p_fallecidos">
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator">
+        <h2>Estadísticas de camas</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="c_uci" class="form-label">Total camas en UCI</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="c_uci" id="c_uci" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="c_usadas" class="form-label">Camas usadas</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="c_usadas" id="c_usadas">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="c_insatis" class="form-label">Demanda insatisfecha</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="c_insatis" id="c_insatis">
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator">
+        <h2>Estadísticas de personal</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="medicos" class="form-label">Médicos</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos" id="medicos" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="medicos_4" class="form-label">Médicos en cuarentena</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos_4" id="medicos_4" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="medicos_c" class="form-label">Médicos Covid+</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="medicos_c" id="medicos_c" value="0">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="enfermeros" class="form-label">Enfermeros</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="enfermeros" id="enfermeros">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="enfermeros_4" class="form-label">Enfermeros en cuarentena</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="enfermeros_4" id="enfermeros_4">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="enfermeros_c" class="form-label">Enfermeros Covid+</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="enfermeros_c" id="enfermeros_c">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="auxiliares" class="form-label">Auxiliares</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="auxiliares" id="auxiliares">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="auxiliares_4" class="form-label">Auxiliares en cuarentena</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="auxiliares_4" id="auxiliares_4">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="auxiliares_c" class="form-label">Auxiliares Covid+</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="0" name="auxiliares_c" id="auxiliares_c">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="ter_resp" class="form-label">Terapistas respiratorios</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp" id="ter_resp" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ter_resp_4" class="form-label">Terapistas respiratorios<br>en cuarentena</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp_4" id="ter_resp_4" value="0">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ter_resp_c" class="form-label">Terapistas respiratorios<br>Covid+</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="ter_resp_c" id="ter_resp_c" value="0">
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator">
+        <h2>Estadísticas de insumos</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="respiradores" class="form-label">Respiradores</label>
+            <div>
+              <select id="respiradores" name="respiradores">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="tubos_ett" class="form-label">Tubos ETT</label>
+            <div>
+              <select id="tubos_ett" name="tubos_ett">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="mascarillas" class="form-label">Mascarillas</label>
+            <div>
+              <select id="mascarillas" name="mascarillas">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="prot_personal" class="form-label">Protección Personal</label>
+            <div>
+              <select id="prot_personal" name="prot_personal">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="separator">
+        <h2>Estadísticas de medicamentos</h2>
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="midazolam" class="form-label">Midazolam</label>
+            <div>
+              <select id="midazolam" name="midazolam">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="propofol" class="form-label">Propofol</label>
+            <div>
+              <select id="propofol" name="propofol">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dexmedetomidina" class="form-label">Dexmedetomidina</label>
+            <div>
+              <select id="dexmedetomidina" name="dexmedetomidina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="fentanilo" class="form-label">Fentanilo</label>
+            <div>
+              <select id="fentanilo" name="fentanilo">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="rocuronio" class="form-label">Rocuronio</label>
+            <div>
+              <select id="rocuronio" name="rocuronio">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="norepinefrina" class="form-label">Norepinefrina</label>
+            <div>
+              <select id="norepinefrina" name="norepinefrina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dopamina" class="form-label">Dopamina</label>
+            <div>
+              <select id="dopamina" name="dopamina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dobutamina" class="form-label">Dobutamina</label>
+            <div>
+              <select id="dobutamina" name="dobutamina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="antivirales" class="form-label">Antivirales</label>
+            <div>
+              <select id="antivirales" name="antivirales">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="azitromicina" class="form-label">Azitromicina</label>
+            <div>
+              <select id="azitromicina" name="azitromicina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ceftriaxone" class="form-label">Ceftriaxone</label>
+            <div>
+              <select id="ceftriaxone" name="ceftriaxone">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="ampicilina_sulbactam" class="form-label">Ampicilina-sulbactam</label>
+            <div>
+              <select id="ampicilina_sulbactam" name="ampicilina_sulbactam">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="piperazilina" class="form-label">Piperazilina</label>
+            <div>
+              <select id="piperazilina" name="piperazilina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="enoxaheparina" class="form-label">Enoxaheparina</label>
+            <div>
+              <select id="enoxaheparina" name="enoxaheparina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="metilprednisolona" class="form-label">Metilprednisolona</label>
+            <div>
+              <select id="metilprednisolona" name="metilprednisolona">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="dexametasona" class="form-label">Dexametasona</label>
+            <div>
+              <select id="dexametasona" name="dexametasona">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <hr class="minor">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="hidroxicloroquina" class="form-label">Hidroxicloroquina</label>
+            <div>
+              <select id="hidroxicloroquina" name="enoxaheparina">
+                <option value="adecuados">Adecuado</option>
+                <option value="medios">Medio</option>
+                <option value="criticos">Crítico</option>
+                <option value="nodisp">No disponible</option>
+                <option value="n_a" selected>Sin información</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-2">Actualizar</button>
+        </div>
+      </form>
+    </div>
+
+{% end %}

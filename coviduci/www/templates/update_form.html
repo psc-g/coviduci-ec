@@ -7,7 +7,7 @@
 {% end %}
 
 {% block content %}
-      <h1>Hospital {{hospital}}</h1>
+      <h1>Hospital {{display_name}}</h1>
 
       <p>Última actualización: {{last_update}}</p>
 
@@ -16,6 +16,8 @@
       <form action="/update" method="POST">
         <input class="form-control" type="hidden"
          name="hospital" id="hospital" value="{{hospital}}">
+        <input class="form-control" type="hidden"
+         name="user" id="user" value="{{hospital}}">
 
         <h2>Estadísticas de pacientes</h2>
         <div class="form-row">

@@ -8,26 +8,23 @@ from coviduci.www import token
 class UpdateHandler(base.BaseHandler):
 
   ROUTE = '/update'
-  QUERY_ARG = 'id'
 
-  def initialize(self, db, queue, token_encoder):
+  def initialize(self, db, queue):
     self.db = db
     self.queue = queue
-    self.token_encoder = token_encoder
 
   async def get(self):
     """Serves the page with a form to be filled by the user."""
-    user_token = self.get_query_argument(self.QUERY_ARG)
-    # TODO(psc): actually encode/decode this!
-    #input_data = self.token_encoder.decode(user_token)
-    input_data = {'hospital': user_token}
-    if input_data is None:
-      return self.redirect('/error')
+    if not self.current_user:
+      self.redirect('/login')
+      return
+    user = tornado.escape.xhtml_escape(self.current_user)
+    input_data = {'user': user}
 
-    data = self._get_data(input_data['hospital'], aggregated=False)
+    data = self._get_data(input_data['user'], aggregated=False)
     data.update(input_data)
+    data['display_name'] = self.db.get_display_name(data['user'])
 
-    self.set_secure_cookie(self.COOKIE, user_token)
     self.render('update_form.html', **data)
 
   async def post(self):
@@ -37,6 +34,5 @@ class UpdateHandler(base.BaseHandler):
       return parts[0], value
 
     data = dict([parse(p) for p in self.request.body.decode().split('&')])
-    #data.update(self.token_encoder.decode(self.get_secure_cookie(self.COOKIE)))
     await self.queue.put(data)
-    self.redirect('{}?id={}'.format(show.ShowHandler.ROUTE, data['hospital']))
+    self.redirect('{}?id={}'.format(show.ShowHandler.ROUTE, data['user']))
