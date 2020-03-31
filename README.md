@@ -4,17 +4,27 @@ This is a web service for enabling ICU medics in Ecuador to report statistics ab
 Most of the fields in this web service are hard-coded for the requirements agreed upon with a number of lead ICU doctors in Ecuador, but it should be fairly simple to adapt to other use cases. See the instructions below on how to install and deploy this service.
 
 # Design
+
+## High-level diagram
+
 The following diagram describes the system at a high level.
 ![CovidUCI design](https://github.com/psc-g/coviduci-ec/blob/master/images/design.png)
 
+## Hospital administrators
+
 The idea is that each hospital has a designated admin which is in charge of updating the statistics for their hospital on a regular basis. This is in part to reduce load on the server, but also to reduce the likelihood of incorrect data entry. The page for modifying hospital data looks something like (this is obviously a fake hospital with fake data):
 ![Hospital update form](https://github.com/psc-g/coviduci-ec/blob/master/images/actualizar.png)
+
+
+## Ministry view
 
 The ministry of health will then have access to a list of all registered hospitals:
 ![List of hospitals](https://github.com/psc-g/coviduci-ec/blob/master/images/lista.png)
 
 and an aggregated view of the data for all the hospitals, with the most critical elements at the top:
 ![Complete hospital data](https://github.com/psc-g/coviduci-ec/blob/master/images/datos_completos.png)
+
+## Chosen fields
 
 The fields we have chosen to report are:
 
