@@ -1,5 +1,6 @@
 """SQLite storage backend wrapper."""
 from absl import logging
+import getpass
 import os
 import sqlite3
 import time
@@ -92,6 +93,26 @@ class SQLiteDB:
                                    medios TEXT, criticos TEXT, nodisp TEXT,
                                    timestamp INTEGER)"""
     )
+    self._conn.commit()
+
+  def create_users(self):
+    """Create the users table, initially only with the admin logins."""
+    self._conn.execute(
+        """CREATE TABLE users
+           (name TEXT PRIMARY KEY NOT NULL, login TEXT NOT NULL,
+            display_name TEXT NOT NULL)""")
+    display_name = input('Enter a name for the admin account: ')
+    pwd = getpass.getpass(prompt='Enter a password for the admin account: ')
+    pwd = self.token_encoder.encode(pwd)
+    add_user = """INSERT INTO users (name, login, display_name) VALUES
+                  ('{name}', '{pwd}', '{display_name}')"""
+    self._conn.execute(add_user.format(name='admin', pwd=pwd,
+                                       display_name=display_name))
+    display_name = input('Enter a name for the ministry: ')
+    pwd = getpass.getpass(prompt='Enter a password for the ministry: ')
+    pwd = self.token_encoder.encode(pwd)
+    self._conn.execute(add_user.format(name='ministerio', pwd=pwd,
+                                       display_name=display_name))
     self._conn.commit()
 
   def upsert_hospitales(

@@ -11,14 +11,26 @@
       <hr class="title">
 
       <form action="/add_hospital" method="POST">
-        <label for="display_name" class="form-label">Hospital:</label>
-        <input class="form-control" type="text"
-         name="display_name" id="display_name" value="" placeholder="Ingrese el nombre del hospital aquí">
-        <label for="clave" class="form-label">Clave de ingreso</label>
-        <input class="form-control" type="password" name="clave" id="clave">
-        <input class="form-control" type="hidden"
-         name="user" id="user" value="{{user}}">
+        <div class="form-row">
+          <div class="form-elem positive">
+            <label for="display_name" class="form-label">Hospital:</label>
+            <div>
+              <input class="form-control" type="text"
+               name="display_name" id="display_name" value=""
+               placeholder="Ingrese el nombre del hospital aquí">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="clave" class="form-label">Clave de ingreso</label>
+            <div>
+              <input class="form-control" type="password" name="clave" id="clave">
+            </div>
+            <input class="form-control" type="hidden"
+             name="user" id="user" value="{{user}}">
+          </div>
+        </div>
 
+        <hr class="separator">
         <h2>Estadísticas de pacientes</h2>
         <div class="form-row">
           <div class="form-elem positive">

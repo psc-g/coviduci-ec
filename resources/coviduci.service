@@ -1,0 +1,11 @@
+[Unit]
+Description=COVIDUCI
+[Service]
+WorkingDirectory=/home/${USER}/coviduci-ec/
+ExecStart=/home/${USER}/miniconda3/envs/coviduci/bin/python /home/${USER}/coviduci-ec/scripts/run_server.py --port 8888 --dotenv_path=/home/${USER}/resources/coviduci.env --config=/home/${USER}/resources/coviduci.toml --mode=prod
+User=${USER}
+Group=${USER}
+Restart=on-failure
+Type=simple
+[Install]
+WantedBy=multi-user.target
