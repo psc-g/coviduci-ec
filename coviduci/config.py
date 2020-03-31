@@ -15,7 +15,6 @@ class Config:
 
   # All the secret environment keys.
   ENV_KEYS = [
-    'SHEET_ID',  # The Google sheets ID.
     'TOKEN_LOC',  # Path to the token.pickle file.
     'SECRET_COOKIE',  # Secret cookie for login.
     'JWT_SECRET',  # Secret for encoding/decoding tokens.

@@ -1,4 +1,51 @@
-# Installation instructions
+# About
+This is a web service for enabling ICU medics in Ecuador to report statistics about bed availability, patients, personnel, and equipment/medicine. The hope is that this can help provide more up-to-date data for governing agencies to deal with the current Covid-19 pandemic.
+
+Most of the fields in this web service are hard-coded for the requirements agreed upon with a number of lead ICU doctors in Ecuador, but it should be fairly simple to adapt to other use cases. See the instructions below on how to install and deploy this service.
+
+# Design
+The following diagram describes the system at a high level.
+![CovidUCI design](https://github.com/psc-g/coviduci-ec/blob/master/images/design.png)
+
+The idea is that each hospital has a designated admin which is in charge of updating the statistics for their hospital on a regular basis. This is in part to reduce load on the server, but also to reduce the likelihood of incorrect data entry. The page for modifying hospital data looks something like (this is obviously a fake hospital with fake data):
+![Hospital update form](https://github.com/psc-g/coviduci-ec/blob/master/images/actualizar.png)
+
+The ministry of health will then have access to a list of all registered hospitals:
+![List of hospitals](https://github.com/psc-g/coviduci-ec/blob/master/images/lista.png)
+
+and an aggregated view of the data for all the hospitals, with the most critical elements at the top:
+![Complete hospital data](https://github.com/psc-g/coviduci-ec/blob/master/images/datos_completos.png)
+
+The fields we have chosen to report are:
+
+*  Patient statistics:
+   *  Number of admitted patients
+   *  Number of discharged patients
+   *  Number of deceased patients
+*  Bed statistics:
+   *  Total number of beds in the ICU
+   *  Number of used beds
+   *  Number of unmet requests for beds
+*  Personnel statistics (for medics, nurses, auxiliaries, and respiratory therapists):
+   *  Number active
+   *  Number quarantined
+   *  Number tested positive for Covid-19
+*  Supplies statistics, possible values are "Adequate", "Medium", "Critical", "Unavailable" (i.e. they ran out), and "No information available":
+   *  Respirators
+   *  ETT Tubes
+   *  Face masks
+   *  Personal Protective Equipment
+* Medicine statistics, same categories as for supplies. Lists the main medicines used in caring for patients.
+
+# Deploying your own
+
+If you would like to deploy your own service, follow the instructions below. Some caveats before detailing the instructions:
+
+*  This is not necessarily the best way to design such a service, but I wanted to be able to bring something up in a week's time, which thankfully I was able to do.
+*  Given that this is meant for Ecuador (a Spanish speaking country), but I typically program in English, a lot of the code and comments are in "Spanglish".
+*  The fields listed above are hardcoded, so you will have to update them for your specific use-case and language.
+
+## Installation instructions
 
 1.  Start a new project or open an existing one on [Google Cloud Platform](https://console.cloud.google.com/).
 

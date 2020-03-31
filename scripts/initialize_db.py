@@ -1,4 +1,4 @@
-"""Script to pull data from spreadsheet and populate SQLite database."""
+"""Script to initialize the SQLite database."""
 from absl import app
 from absl import flags
 from coviduci import config

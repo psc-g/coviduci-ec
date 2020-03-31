@@ -46,7 +46,7 @@ class SQLiteDB:
   """Wraps SQLite DB for bed counts."""
 
   def __init__(self, db_path, token_encoder):
-    """Given a token file and a sheet id, loads the sheet to be queried."""
+    """Construct the SQLite object."""
     self._db_path = db_path
     self.token_encoder = token_encoder
 
