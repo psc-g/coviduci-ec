@@ -1,7 +1,7 @@
 # About
-This is a web service for enabling ICU medics in Ecuador to report statistics about bed availability, patients, personnel, and equipment/medicine. The hope is that this can help provide more up-to-date data for governing agencies to deal with the current Covid-19 pandemic.
+This is a web service for enabling ICU physicians in Ecuador to report statistics about bed availability, patients, personnel, and equipment/medicine. The hope is that this can help provide more up-to-date data for governing agencies to deal with the current Covid-19 pandemic.
 
-Most of the fields in this web service are hard-coded for the requirements agreed upon with a number of lead ICU doctors in Ecuador, but it should be fairly simple to adapt to other use cases. See the instructions below on how to install and deploy this service.
+Most of the fields in this web service are hard-coded for the requirements agreed upon with a number of leading ICU physicians in Ecuador, but it should be fairly simple to adapt to other use cases. See the instructions below on how to install and deploy this service.
 
 # Design
 
@@ -12,7 +12,7 @@ The following diagram describes the system at a high level.
 
 ## Hospital administrators
 
-The idea is that each hospital has a designated admin which is in charge of updating the statistics for their hospital on a regular basis. This is in part to reduce load on the server, but also to reduce the likelihood of incorrect data entry. The page for modifying hospital data looks something like (this is obviously a fake hospital with fake data):
+The idea is that each hospital has a designated admin which is in charge of updating the statistics for their hospital on a regular basis. This is in part to reduce load on the server, but also to reduce the likelihood of incorrect data entry. The page for modifying hospital data looks something like this (data utilized is fake):
 ![Hospital update form](https://github.com/psc-g/coviduci-ec/blob/master/images/actualizar.png)
 
 
@@ -36,7 +36,7 @@ The fields we have chosen to report are:
    *  Total number of beds in the ICU
    *  Number of used beds
    *  Number of unmet requests for beds
-*  Personnel statistics (for medics, nurses, auxiliaries, and respiratory therapists):
+*  Personnel statistics (for physicians, nurses, auxiliaries, and respiratory therapists):
    *  Number active
    *  Number quarantined
    *  Number tested positive for Covid-19
@@ -92,13 +92,11 @@ If you would like to deploy your own service, follow the instructions below. Som
     conda activate coviduci
     ```
 
-1.  Once connected to the machine, run:
+1.  Once in the conda environment, run:
 
     ```
-    git clone git@github.com:psc-g/coviduci-ec.git
+    git clone https://github.com/psc-g/coviduci-ec.git
     ```
-
-    (You may need to generate a new SSH key for this machine, see instructions [here](https://help.github.com/en/enterprise/2.17/user/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)).
 
 1.  Run the following set of commands:
 
@@ -174,7 +172,7 @@ If you would like to deploy your own service, follow the instructions below. Som
     sudo systemctl status coviduci
     ```
 
-1.  Once your site is up, it's probably best to test your changes by running the test server (see instrucitons above), and then restarting the real server. A useful way of restarting your server and seeing the output logs:
+1.  Once your site is up, it's probably best to test your changes by running the test server (see instructions above), and then restarting the real server. A useful way of restarting your server and seeing the output logs:
 
     ```
     sudo systemctl restart coviduci &&  tail /var/log/syslog  -n 100 -f-f
