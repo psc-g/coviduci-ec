@@ -13,12 +13,17 @@
     {% if nodisp is not None %}
       <h2><font color="red">Elementos no disponibles</font></h2>
       <table style="width:100%">
-        <tr><th>Hospital</th><th>Elementos</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
         {% for hospital in nodisp %}
-          <tr>
-            <th>{{display_name[hospital]}}</th>
-            <th>{% for elem in nodisp[hospital] %} {{elem}}<br> {% end %}</th>
-          </tr>
+          {% if len(nodisp[hospital]) %}
+            <tr>
+              <th>{{display_name[hospital]}}</th>
+              <th>{% for elem in nodisp[hospital] %} {{elem}}<br> {% end %}</th>
+            </tr>
+          {% end %}
         {% end %}
       </table>
 
@@ -28,12 +33,17 @@
     {% if criticos is not None %}
       <h2><font color="red">Elementos en estado crítico</font></h2>
       <table style="width:100%">
-        <tr><th>Hospital</th><th>Elementos</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
         {% for hospital in criticos %}
-          <tr>
-            <th>{{display_name[hospital]}}</th>
-            <th>{% for elem in criticos[hospital] %} {{elem}}<br> {% end %}</th>
-          </tr>
+          {% if len(criticos[hospital]) %}
+            <tr>
+              <th>{{display_name[hospital]}}</th>
+              <th>{% for elem in criticos[hospital] %} {{elem}}<br> {% end %}</th>
+            </tr>
+          {% end %}
         {% end %}
       </table>
 
@@ -41,18 +51,74 @@
     {% end %}
     <h2>Estadísticas de pacientes</h2>
     <table style="width:100%">
-      <tr><th>Hospital</th><th>Ingresados</th><th>De alta</th><th>Fallecidos</th></tr>
+      <tr>
+        <th><b>Hospital</b></th>
+        <th><b>Ingresados (Covid)</b></th>
+        <th><b>Ingresados (Sospecha covid)</b></th>
+        <th><b>Ingresados (Otros)</b></th>
+        <th><b>De alta (Covid)</b></th>
+        <th><b>De alta (Otros)</b></th>
+        <th><b>Fallecidos (Covid)</b></th>
+        <th><b>Fallecidos (Sospecha covid)</b></th>
+        <th><b>Fallecidos (Otros)</b></th>
+      </tr>
+      <tr>
+        <th><b>Total</b></th>
+        <th><b>{{p_ingresos['total']}}</b></th>
+        <th><b>{{p_ingresos_sosp['total']}}</b></th>
+        <th><b>{{p_ingresos_otros['total']}}</b></th>
+        <th><b>{{p_alta['total']}}</b></th>
+        <th><b>{{p_alta_otros['total']}}</b></th>
+        <th><b>{{p_fallecidos['total']}}</b></th>
+        <th><b>{{p_fallecidos_sosp['total']}}</b></th>
+        <th><b>{{p_fallecidos_otros['total']}}</b></th>
+      </tr>
       {% for hospital in p_ingresos %}
-        <tr><th>{{display_name[hospital]}}</th><th>{{p_ingresos[hospital]}}</th><th>{{p_alta[hospital]}}</th><th>{{p_fallecidos[hospital]}}</th>
+        {% if hospital == 'total' %}
+          {% continue %}
+        {% end %}
+        <tr>
+          <th>{{display_name[hospital]}}</th>
+          <th>{{p_ingresos[hospital]}}</th>
+          <th>{{p_ingresos_sosp[hospital]}}</th>
+          <th>{{p_ingresos_otros[hospital]}}</th>
+          <th>{{p_alta[hospital]}}</th>
+          <th>{{p_alta_otros[hospital]}}</th>
+          <th>{{p_fallecidos[hospital]}}</th>
+          <th>{{p_fallecidos_sosp[hospital]}}</th>
+          <th>{{p_fallecidos_otros[hospital]}}</th>
+        </tr>
       {% end %}
     </table>
 
     <hr class="separator">
     <h2>Estadísticas de camas</h2>
     <table style="width:100%">
-      <tr><th>Hospital</th><th>Total UCI</th><th>En uso</th><th>Demanda insatisfecha</th></tr>
+      <tr>
+        <th><b>Hospital</b></th>
+        <th><b>Total UCI</b></th>
+        <th><b>En uso (Covid)</b></th>
+        <th><b>En uso (Otros)</b></th>
+        <th><b>Demanda insatisfecha</b></th>
+      </tr>
+      <tr>
+        <th><b>Total</b></th>
+        <th><b>{{c_uci['total']}}</b></th>
+        <th><b>{{c_usadas['total']}}</b></th>
+        <th><b>{{c_usadas_otras['total']}}</b></th>
+        <th><b>{{c_insatis['total']}}</b></th>
+      </tr>
       {% for hospital in c_uci %}
-        <tr><th>{{display_name[hospital]}}</th><th>{{c_uci[hospital]}}</th><th>{{c_usadas[hospital]}}</th><th>{{c_insatis[hospital]}}</th>
+        {% if hospital == 'total' %}
+          {% continue %}
+        {% end %}
+        <tr>
+          <th>{{display_name[hospital]}}</th>
+          <th>{{c_uci[hospital]}}</th>
+          <th>{{c_usadas[hospital]}}</th>
+          <th>{{c_usadas_otras[hospital]}}</th>
+          <th>{{c_insatis[hospital]}}</th>
+        </tr>
       {% end %}
     </table>
 
@@ -60,15 +126,25 @@
     <h2>Estadísticas de personal</h2>
     <table style="width:100%">
       <tr>
-        <th>Hospital</th>
-        <th>Médicos<br>(en cuarentena / Covid+)</th>
-        <th>Enfermeros<br>(en cuarentena / Covid+)</th>
-        <th>Auxiliares<br>(en cuarentena / Covid+)</th>
-        <th>Terapistas respiratorios<br>(en cuarentena / Covid+)</th>
+        <th><b>Hospital</b></th>
+        <th><b>Médicos<br>(en cuarentena / Covid+)</b></th>
+        <th><b>Enfermeros<br>(en cuarentena / Covid+)</b></th>
+        <th><b>Auxiliares<br>(en cuarentena / Covid+)</b></th>
+        <th><b>Terapistas respiratorios<br>(en cuarentena / Covid+)</b></th>
+      </tr>
+      <tr>
+        <th><b>Total</b></th>
+        <th><b>{{medicos['total']}} ({{medicos_4['total']}} / {{medicos_c['total']}})</b></th>
+        <th><b>{{enfermeros['total']}} ({{enfermeros_4['total']}} / {{enfermeros_c['total']}})</b></th>
+        <th><b>{{auxiliares['total']}} ({{auxiliares_4['total']}} / {{auxiliares_c['total']}})</b></th>
+        <th><b>{{ter_resp['total']}} ({{ter_resp_4['total']}} / {{ter_resp_c['total']}})</b></th>
       </tr>
       {% for hospital in medicos%}
+        {% if hospital == 'total' %}
+          {% continue %}
+        {% end %}
         <tr>
-          <th>{{display_name[hospital]}}
+          <th>{{display_name[hospital]}}</th>
           <th>{{medicos[hospital]}} ({{medicos_4[hospital]}} / {{medicos_c[hospital]}})</th>
           <th>{{enfermeros[hospital]}} ({{enfermeros_4[hospital]}} / {{enfermeros_c[hospital]}})</th>
           <th>{{auxiliares[hospital]}} ({{auxiliares_4[hospital]}} / {{auxiliares_c[hospital]}})</th>
@@ -81,12 +157,17 @@
     {% if medios is not None %}
       <h2>Elementos en estado medio</h2>
       <table style="width:100%">
-        <tr><th>Hospital</th><th>Elementos</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
         {% for hospital in medios %}
-          <tr>
-            <th>{{display_name[hospital]}}</th>
-            <th>{% for elem in medios[hospital] %} {{elem}}<br> {% end %}</th>
-          </tr>
+          {% if len(medios[hospital]) %}
+            <tr>
+              <th>{{display_name[hospital]}}</th>
+              <th>{% for elem in medios[hospital] %} {{elem}}<br> {% end %}</th>
+            </tr>
+          {% end %}
         {% end %}
       </table>
 
@@ -96,12 +177,17 @@
     {% if adecuados is not None %}
       <h2>Elementos en estado adecuado</h2>
       <table style="width:100%">
-        <tr><th>Hospital</th><th>Elementos</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
         {% for hospital in adecuados %}
-          <tr>
-            <th>{{display_name[hospital]}}</th>
-            <th>{% for elem in adecuados[hospital] %} {{elem}}<br> {% end %}</th>
-          </tr>
+          {% if len(adecuados[hospital]) %}
+            <tr>
+              <th>{{display_name[hospital]}}</th>
+              <th>{% for elem in adecuados[hospital] %} {{elem}}<br> {% end %}</th>
+            </tr>
+          {% end %}
         {% end %}
       </table>
 
@@ -111,12 +197,17 @@
     {% if n_a is not None %}
       <h2>Elementos sin información</h2>
       <table style="width:100%">
-        <tr><th>Hospital</th><th>Elementos</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
         {% for hospital in n_a %}
-          <tr>
-            <th>{{display_name[hospital]}}</th>
-            <th>{% for elem in n_a[hospital] %} {{elem}}<br> {% end %}</th>
-          </tr>
+          {% if len(n_a[hospital]) %}
+            <tr>
+              <th>{{display_name[hospital]}}</th>
+              <th>{% for elem in n_a[hospital] %} {{elem}}<br> {% end %}</th>
+            </tr>
+          {% end %}
         {% end %}
       </table>
 
@@ -125,7 +216,10 @@
 
     <h2>Últimas actualizaciones</h2>
     <table style="width:100%">
-      <tr><th>Hospital</th><th>Última actualización</th></tr>
+        <tr>
+          <th><b>Hospital</b></th>
+          <th><b>Elementos</b></th>
+        </tr>
       {% for hospital in actualizaciones %}
         <tr><th>{{display_name[hospital]}}</th><th>{{actualizaciones[hospital]}}</th></tr>
       {% end %}

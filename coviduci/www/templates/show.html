@@ -12,33 +12,56 @@
 
     <hr class="title">
 
-    <h2><font color="red">Elementos no disponibles</font></h2>
-      {% for item in nodisp %}
-        <p><h3>{{item}}</h3></p>
-      {% end %}
+    {% if len(nodisp) %}
+      <h2><font color="red">Elementos no disponibles</font></h2>
+        {% for item in nodisp %}
+          <p><h3>{{item}}</h3></p>
+        {% end %}
 
-    <hr class="separator">
+      <hr class="separator">
+    {% end %}
 
-    <h2><font color="red">Elementos en estado crítico</font></h2>
-      {% for item in criticos %}
-        <p><h3>{{item}}</h3></p>
-      {% end %}
+    {% if len(criticos) %}
+      <h2><font color="red">Elementos en estado crítico</font></h2>
+        {% for item in criticos %}
+          <p><h3>{{item}}</h3></p>
+        {% end %}
 
-    <hr class="separator">
+      <hr class="separator">
+    {% end %}
 
     <h2>Estadísticas de pacientes</h2>
     <table style="width:100%">
-      <tr><th>Ingresados</th><th>De alta</th><th>Fallecidos</th></tr>
-      <tr><th>{{p_ingresos}}</th><th>{{p_alta}}</th><th>{{p_fallecidos}}</th>
+      <tr>
+        <th>Ingresados (Covid)</th>
+        <th>Ingresados (Sospecha covid)</th>
+        <th>Ingresados (Otros)</th>
+        <th>De alta (Covid)</th>
+        <th>De alta (Otros)</th>
+        <th>Fallecidos (Covid)</th>
+        <th>Fallecidos (Sospecha covid)</th>
+        <th>Fallecidos (Otros)</th>
+      </tr>
+      <tr>
+        <th>{{p_ingresos}}</th>
+        <th>{{p_ingresos_sosp}}</th>
+        <th>{{p_ingresos_otros}}</th>
+        <th>{{p_alta}}</th>
+        <th>{{p_alta_otros}}</th>
+        <th>{{p_fallecidos}}</th>
+        <th>{{p_fallecidos_sosp}}</th>
+        <th>{{p_fallecidos_otros}}</th>
+      </tr>
     </table>
 
     <hr class="separator">
 
     <h2>Estadísticas de camas</h2>
     <table style="width:100%">
-      <tr><th>Total UCI</th><th>En uso</th><th>Demanda insatisfecha</th></tr>
+      <tr><th>Total UCI</th><th>En uso (Covid)</th><th>En uso (otros)</th><th>Demanda insatisfecha</th></tr>
       <th>{{c_uci}}</th>
       <th>{{c_usadas}}</th>
+      <th>{{c_usadas_otras}}</th>
       <th>{{c_insatis}}</th>
     </table>
 

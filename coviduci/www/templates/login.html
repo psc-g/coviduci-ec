@@ -5,6 +5,16 @@
 <link rel="stylesheet" href="/static/style.css">
 {% end %}
 
+{% block error_messages %}
+
+  {% if status is not None %}
+    {% if status == 'wrong_login' %}
+      <h3><font color="red">Clave incorrecta, intente de nuevo.</font></h3>
+    {% end %}
+  {% end %}
+
+{% end %}
+
 {% block content %}
 <div class="inicio">
   <h1>CovidUCI-EC Login</h1>
@@ -14,4 +24,3 @@
     <input type="submit" value="Ingresar">
   </form>
 {% end %}
-

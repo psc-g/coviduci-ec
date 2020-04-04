@@ -57,6 +57,7 @@ class ListHospitalsHandler(base.BaseHandler):
       return
     hospitals = self.db.get_hospitals()
     hospitals = [h for h in hospitals if h not in TEST_HOSPITALS]
+    hospitals.sort()
     data = {'user': user, 'hospitals': hospitals}
     self.render('list_hospitals.html', **data)
 
@@ -78,7 +79,7 @@ class AllDataHandler(base.BaseHandler):
       hospitales.append(hospital)
       data['display_name'][hospital] = display_name
     for field in self.DEFAULT_VALUES:
-      data[field] = {}
+      data[field] = {'total': 0}
     category_counts = {}
     for category in self.REQUIRED_CATEGORIES:
       data[category] = {}
@@ -95,6 +96,7 @@ class AllDataHandler(base.BaseHandler):
           hospital_df[hospital_df.timestamp == max(hospital_df.timestamp)])
       data['actualizaciones'][hospital] = int(hospital_df.timestamp)
       for field in self.DEFAULT_VALUES:
+        data[field]['total'] += int(hospital_df[field])
         data[field][hospital] = int(hospital_df[field])
       for category in self.REQUIRED_CATEGORIES:
         data[category][hospital] = []

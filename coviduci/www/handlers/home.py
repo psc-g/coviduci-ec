@@ -47,7 +47,8 @@ class LoginHandler(base.BaseHandler):
       self.token_encoder = token_encoder
 
     def get(self):
-      self.render('login.html', user='none')
+      status = self.get_query_argument('status', default=None)
+      self.render('login.html', user='none', status=status)
 
     def post(self):
       clave = self.get_argument('clave')
@@ -56,7 +57,40 @@ class LoginHandler(base.BaseHandler):
         self.set_secure_cookie('user', user)
         self.redirect('/')
       else:
-        self.redirect('/login')
+        self.redirect('/login?status=wrong_login')
+
+
+class UpdateLoginHandler(base.BaseHandler):
+
+    ROUTE = '/update_login'
+
+    def initialize(self, token_encoder, db):
+      self.db = db
+      self.token_encoder = token_encoder
+
+    def get(self):
+      status = self.get_query_argument('status', default=None)
+      user = tornado.escape.xhtml_escape(self.current_user)
+      self.render('update_login.html', user=user, status=status)
+
+    def post(self):
+      clave_original = self.get_argument('clave_original')
+      clave_nueva_1 = self.get_argument('clave_nueva_1')
+      clave_nueva_2 = self.get_argument('clave_nueva_2')
+      encoded_original_login = self.token_encoder.encode(clave_original)
+      user = self.db.check_login(encoded_original_login)
+      if user is None:
+        self.redirect('/update_login?status=wrong_pwd')
+      elif clave_nueva_1 != clave_nueva_2:
+        self.redirect('/update_login?status=mismatch')
+      elif len(clave_nueva_1) < 7:
+        self.redirect('/update_login?status=short')
+      else:
+        encoded_new_login = self.token_encoder.encode(clave_nueva_1)
+        if self.db.update_login(encoded_original_login, encoded_new_login):
+          self.redirect('/update_login?status=success')
+        else:
+          self.redirect('/update_login?status=error')
 
 
 class LogoutHandler(base.BaseHandler):

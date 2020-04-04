@@ -13,6 +13,7 @@ class BaseHandler(tornado.web.RequestHandler):
   DEFAULT_VALUES = {
       'c_uci': 0,
       'c_usadas': 0,
+      'c_usadas_otras': 0,
       'c_insatis': 0,
       'medicos': 0,
       'medicos_4': 0,
@@ -29,6 +30,11 @@ class BaseHandler(tornado.web.RequestHandler):
       'p_ingresos': 0,
       'p_alta': 0,
       'p_fallecidos': 0,
+      'p_ingresos_otros': 0,
+      'p_ingresos_sosp': 0,
+      'p_alta_otros': 0,
+      'p_fallecidos_otros': 0,
+      'p_fallecidos_sosp': 0,
   }
   REQUIRED_FIELDS = {
       'insumos': ['respiradores', 'tubos_ett', 'prot_personal', 'mascarillas'],
@@ -77,6 +83,7 @@ class BaseHandler(tornado.web.RequestHandler):
         'hospital': hospital,
         'c_uci': int(df.c_uci),
         'c_usadas': int(df.c_usadas),
+        'c_usadas_otras': int(df.c_usadas_otras),
         'c_insatis': int(df.c_insatis),
         'medicos': int(df.medicos),
         'medicos_4': int(df.medicos_4),
@@ -93,6 +100,11 @@ class BaseHandler(tornado.web.RequestHandler):
         'p_ingresos': int(df.p_ingresos),
         'p_alta': int(df.p_alta),
         'p_fallecidos': int(df.p_fallecidos),
+        'p_ingresos_otros': int(df.p_ingresos_otros),
+        'p_ingresos_sosp': int(df.p_ingresos_sosp),
+        'p_alta_otros': int(df.p_alta_otros),
+        'p_fallecidos_otros': int(df.p_fallecidos_otros),
+        'p_fallecidos_sosp': int(df.p_fallecidos_sosp),
     }
     required = {t: None for t in self.TABLES}
     if aggregated:

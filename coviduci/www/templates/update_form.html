@@ -21,7 +21,7 @@
         <h2>Estadísticas de pacientes</h2>
         <div class="form-row">
           <div class="form-elem positive">
-            <label for="p_ingresos" class="form-label">Pacientes ingresados</label>
+            <label for="p_ingresos" class="form-label">Pacientes ingresados (Covid)</label>
             <div>
               <input
               class="form-control" type="number"
@@ -29,7 +29,23 @@
             </div>
           </div>
           <div class="form-elem positive">
-            <label for="p_alta" class="form-label">Pacientes dados de alta</label>
+            <label for="p_ingresos_sosp" class="form-label">Pacientes ingresados (Sospecha covid)</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_ingresos_sosp" id="p_ingresos_sosp" value="{{p_ingresos_sosp}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_ingresos_otros" class="form-label">Pacientes ingresados (Otros)</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_ingresos_otros" id="p_ingresos_otros" value="{{p_ingresos_otros}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_alta" class="form-label">Pacientes dados de alta (Covid)</label>
             <div>
               <input
               class="form-control" type="number"
@@ -37,11 +53,35 @@
             </div>
           </div>
           <div class="form-elem positive">
-            <label for="p_fallecidos" class="form-label">Pacientes fallecidos</label>
+            <label for="p_alta_otros" class="form-label">Pacientes dados de alta (Otros)</label>
+            <div>
+              <input
+              class="form-control" type="number"
+              name="p_alta_otros" id="p_alta_otros" value="{{p_alta_otros}}">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_fallecidos" class="form-label">Pacientes fallecidos (Covid)</label>
             <div>
               <input
                 class="form-control" type="number"
                 value="{{p_fallecidos}}" name="p_fallecidos" id="p_fallecidos">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_fallecidos_sosp" class="form-label">Pacientes fallecidos (Sospecha covid)</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{p_fallecidos_sosp}}" name="p_fallecidos_sosp" id="p_fallecidos_sosp">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="p_fallecidos_otros" class="form-label">Pacientes fallecidos (Otros)</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{p_fallecidos_otros}}" name="p_fallecidos_otros" id="p_fallecidos_otros">
             </div>
           </div>
         </div>
@@ -58,11 +98,19 @@
             </div>
           </div>
           <div class="form-elem positive">
-            <label for="c_usadas" class="form-label">Camas usadas</label>
+            <label for="c_usadas" class="form-label">Camas usadas (Covid)</label>
             <div>
               <input
                 class="form-control" type="number"
                 value="{{c_usadas}}" name="c_usadas" id="c_usadas">
+            </div>
+          </div>
+          <div class="form-elem positive">
+            <label for="c_usadas_otras" class="form-label">Camas usadas (Otros)</label>
+            <div>
+              <input
+                class="form-control" type="number"
+                value="{{c_usadas_otras}}" name="c_usadas_otras" id="c_usadas_otras">
             </div>
           </div>
           <div class="form-elem positive">

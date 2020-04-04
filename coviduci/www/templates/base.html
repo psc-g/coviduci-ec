@@ -52,6 +52,9 @@
                 {% end %}
                 {% if user != 'none' %}
                   <li class="nav-item">
+                      <a class="nav-link" href="\update_login">Cambiar login</a>
+                  </li>
+                  <li class="nav-item">
                       <a class="nav-link" href="\logout">Salir</a>
                   </li>
                 {% end %}
@@ -65,6 +68,9 @@
 <main role="main" class="container">
     <div class="jumbotron text-center">
 
+            {% block error_messages %}
+
+            {% end %}
 
             {% block content %}
 
@@ -95,7 +101,7 @@
 <footer class="footer font-small blue">
   <div class="footer-copyright text-center py-3">
     Página web diseñada por <a href="https://twitter.com/pcastr" style="color:white;">Pablo Samuel Castro</a>&nbsp;&nbsp;<a href="https://twitter.com/pcastr?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-lang="es" data-show-count="false">Follow @pcastr</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
-    Código disponible en <a href="http://www.w3.org/2000/svg" style="color:white;">GitHub</a>
+    Código disponible en <a href="https://github.com/psc-g/coviduci-ec" style="color:white;">GitHub</a>
   </div>
 </footer>
 

@@ -79,7 +79,13 @@ class SQLiteDB:
                                  p_ingresos INTEGER,
                                  p_alta INTEGER,
                                  p_fallecidos INTEGER,
-                                 timestamp INTEGER)"""
+                                 timestamp INTEGER,
+                                 c_usadas_otras INTEGER,
+                                 p_ingresos_otros INTEGER,
+                                 p_ingresos_sosp INTEGER,
+                                 p_alta_otros INTEGER,
+                                 p_fallecidos_otros INTEGER,
+                                 p_fallecidos_sosp INTEGER)"""
     )
     self._conn.execute(
       """CREATE TABLE insumos
@@ -137,24 +143,37 @@ class SQLiteDB:
     p_alta: int,
     p_fallecidos: int,
     timestamp: int,
+    c_usadas_otras: int,
+    p_ingresos_otros: int,
+    p_ingresos_sosp: int,
+    p_alta_otros: int,
+    p_fallecidos_otros: int,
+    p_fallecidos_sosp: int,
   ):
     """Add or update a hospital."""
 
     # If not then add:
-    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas, c_insatis,
+    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas,
+                                       c_usadas_otras, c_insatis,
                                        medicos, medicos_4, medicos_c,
                                        enfermeros, enfermeros_4, enfermeros_c,
                                        auxiliares, auxiliares_4, auxiliares_c,
                                        ter_resp, ter_resp_4, ter_resp_c,
                                        p_ingresos, p_alta, p_fallecidos,
-                                       timestamp)
+                                       p_ingresos_otros, p_ingresos_sosp,
+                                       p_alta_otros, p_fallecidos_otros,
+                                       p_fallecidos_sosp, timestamp)
                                        VALUES
-                                      ('{hospital}', {c_uci}, {c_usadas}, {c_insatis},
-                                       {medicos}, {medicos_4}, {medicos_c},
-                                       {enfermeros}, {enfermeros_4}, {enfermeros_c},
-                                       {auxiliares}, {auxiliares_4}, {auxiliares_c},
-                                       {ter_resp}, {ter_resp_4}, {ter_resp_c},
-                                       {p_ingresos}, {p_alta}, {p_fallecidos}, {timestamp})"""
+                                      ('{hospital}', {c_uci}, {c_usadas},
+                                        {c_usadas_otras}, {c_insatis},
+                                        {medicos}, {medicos_4}, {medicos_c},
+                                        {enfermeros}, {enfermeros_4}, {enfermeros_c},
+                                        {auxiliares}, {auxiliares_4}, {auxiliares_c},
+                                        {ter_resp}, {ter_resp_4}, {ter_resp_c},
+                                        {p_ingresos}, {p_alta}, {p_fallecidos},
+                                        {p_ingresos_otros}, {p_ingresos_sosp},
+                                        {p_alta_otros}, {p_fallecidos_otros},
+                                        {p_fallecidos_sosp}, {timestamp})"""
     self._conn.execute(query.format(**locals()))
     self._conn.commit()
 
@@ -223,21 +242,27 @@ class SQLiteDB:
 
     ts = int(time.time())
     # Hospitales update
-    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas, c_insatis,
+    query = """INSERT INTO hospitales (hospital, c_uci, c_usadas,
+                                       c_usadas_otras, c_insatis,
                                        medicos, medicos_4, medicos_c,
                                        enfermeros, enfermeros_4, enfermeros_c,
                                        auxiliares, auxiliares_4, auxiliares_c,
                                        ter_resp, ter_resp_4, ter_resp_c,
-                                       p_ingresos, p_alta,
-                                       p_fallecidos, timestamp)
+                                       p_ingresos, p_alta, p_fallecidos,
+                                       p_ingresos_otros, p_ingresos_sosp,
+                                       p_alta_otros, p_fallecidos_otros,
+                                       p_fallecidos_sosp, timestamp)
                                        VALUES
-                                      ('{hospital}', {c_uci}, {c_usadas}, {c_insatis},
-                                       {medicos}, {medicos_4}, {medicos_c},
-                                       {enfermeros}, {enfermeros_4}, {enfermeros_c},
-                                       {auxiliares}, {auxiliares_4}, {auxiliares_c},
-                                       {ter_resp}, {ter_resp_4}, {ter_resp_c},
-                                       {p_ingresos}, {p_alta}, {p_fallecidos},
-                                       {timestamp})"""
+                                      ('{hospital}', {c_uci}, {c_usadas},
+                                        {c_usadas_otras}, {c_insatis},
+                                        {medicos}, {medicos_4}, {medicos_c},
+                                        {enfermeros}, {enfermeros_4}, {enfermeros_c},
+                                        {auxiliares}, {auxiliares_4}, {auxiliares_c},
+                                        {ter_resp}, {ter_resp_4}, {ter_resp_c},
+                                        {p_ingresos}, {p_alta}, {p_fallecidos},
+                                        {p_ingresos_otros}, {p_ingresos_sosp},
+                                        {p_alta_otros}, {p_fallecidos_otros},
+                                        {p_fallecidos_sosp}, {timestamp})"""
     self._conn.execute(query.format(timestamp=ts, **kwargs))
     # Insumos update
     for insumo in ['respiradores', 'tubos_ett', 'mascarillas', 'prot_personal']:
@@ -278,6 +303,17 @@ class SQLiteDB:
       return None
     else:
       return res.iloc[0]['name']
+
+  def update_login(self, original_login, new_login):
+    query = """UPDATE users SET login = '{new_login}'
+               WHERE login = '{original_login}'"""
+    try:
+      self._conn.execute(query.format(new_login=new_login,
+                                      original_login=original_login))
+      self._conn.commit()
+      return True
+    except:
+      return False
 
   def get_display_name(self, user):
     res = pd.read_sql_query(

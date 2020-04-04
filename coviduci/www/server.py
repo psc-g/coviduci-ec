@@ -42,6 +42,8 @@ class WWWServer:
     self.add_handler(home.HomeHandler, config=self.config, db=self.db)
     self.add_handler(home.LoginHandler, token_encoder=self.token_encoder,
                      db=self.db)
+    self.add_handler(home.UpdateLoginHandler, token_encoder=self.token_encoder,
+                     db=self.db)
     self.add_handler(home.LogoutHandler)
     self.add_handler(show.ShowHandler, db=self.db)
     self.add_handler(mind.MindHandler)

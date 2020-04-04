@@ -86,6 +86,7 @@ div.container {
 table, th, td {
   border: 1px solid black;
   text-align: center;
+  font-weight: normal;
 }
 th, td {
   padding: 10px;

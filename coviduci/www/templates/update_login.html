@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block links %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/style.css">
+{% end %}
+
+{% block error_messages %}
+
+  {% if status is not None %}
+    {% if status == 'success' %}
+      <h3><font color="red">Su login ha sido actualizada.</font></h3>
+    {% elif status == 'wrong_pwd' %}
+      <h3><font color="red">El login original es incorrecta.</font></h3>
+    {% elif status == 'mismatch' %}
+      <h3><font color="red">Los dos logins neuvos no coinciden.</font></h3>
+    {% elif status == 'short' %}
+      <h3><font color="red">El nuevo login es muy corto, intente de nuevo.</font></h3>
+    {% elif status == 'error' %}
+      <h3><font color="red">Ha ocurrido un error, por favor intente de nuevo.</font></h3>
+    {% end %}
+  {% end %}
+
+{% end %}
+
+{% block content %}
+<div class="inicio">
+  <h1>CovidUCI-EC Login</h1>
+  <hr class="title">
+  <h3>Ingrese su login original y el nuevo login. Cada login debe tener al menos 6 caracteres.</h3>
+  <form action="/update_login" method="post">
+    <h4>Ingrese su clave original: <input type="password" name="clave_original"></h4>
+    <h4>Ingrese su nueva clave: <input type="password" name="clave_nueva_1"></h4>
+    <h4>Ingrese su nueva clave nuevamente: <input type="password" name="clave_nueva_2"></h4>
+    <input type="submit" value="Ingresar">
+  </form>
+{% end %}
+
