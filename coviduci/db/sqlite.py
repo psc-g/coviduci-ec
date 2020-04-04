@@ -295,9 +295,10 @@ class SQLiteDB:
     self._conn.execute(query)
     self._conn.commit()
 
-  def check_login(self, encoded_login):
+  def check_login(self, user, encoded_login):
     res = pd.read_sql_query(
-        """SELECT * FROM users WHERE login = '{}'""".format(encoded_login),
+        """SELECT * FROM users WHERE name = '{user}' AND login = '{encoded_login}'""".format(
+            user=user, encoded_login=encoded_login),
         self._conn)
     if res.empty:
       return None

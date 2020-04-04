@@ -51,8 +51,9 @@ class LoginHandler(base.BaseHandler):
       self.render('login.html', user='none', status=status)
 
     def post(self):
+      user = self.get_argument('user')
       clave = self.get_argument('clave')
-      user = self.db.check_login(self.token_encoder.encode(clave))
+      user = self.db.check_login(user, self.token_encoder.encode(clave))
       if user is not None:
         self.set_secure_cookie('user', user)
         self.redirect('/')
