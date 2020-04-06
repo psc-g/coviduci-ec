@@ -79,7 +79,8 @@ class UpdateLoginHandler(base.BaseHandler):
       clave_nueva_1 = self.get_argument('clave_nueva_1')
       clave_nueva_2 = self.get_argument('clave_nueva_2')
       encoded_original_login = self.token_encoder.encode(clave_original)
-      user = self.db.check_login(encoded_original_login)
+      user = tornado.escape.xhtml_escape(self.current_user)
+      user = self.db.check_login(user, encoded_original_login)
       if user is None:
         self.redirect('/update_login?status=wrong_pwd')
       elif clave_nueva_1 != clave_nueva_2:

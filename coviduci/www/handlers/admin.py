@@ -1,5 +1,6 @@
 from absl import logging
 import tornado.web
+from coviduci.db import sqlite
 from coviduci.www.handlers import base
 from coviduci.www import token
 
@@ -26,7 +27,9 @@ class AddHospitalHandler(base.BaseHandler):
     if user != 'admin':
       self.redirect('/')
       return
-    self.render('add_hospital.html', user='admin')
+    status = self.get_query_argument('status', default=None)
+    new_user = self.get_query_argument('new_user', default=None)
+    self.render('add_hospital.html', user=user, status=status, new_user=new_user)
 
   async def post(self):
     def parse(param):
@@ -35,8 +38,14 @@ class AddHospitalHandler(base.BaseHandler):
       return parts[0], value
 
     data = dict([parse(p) for p in self.request.body.decode().split('&')])
+    if data['clave'] != data['clave_2']:
+      self.redirect(self.ROUTE + '?status=mismatch')
+    if len(data['clave']) < 7:
+      self.redirect(self.ROUTE + '?status=short')
     await self.queue.put(data)
-    self.redirect(ListHospitalsHandler.ROUTE)
+    new_user, _ = sqlite.unescape_html(data['display_name'])
+    self.redirect(self.ROUTE +
+                  '?status=success&new_user={}'.format(new_user))
 
 
 class ListHospitalsHandler(base.BaseHandler):

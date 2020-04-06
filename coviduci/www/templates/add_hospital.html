@@ -5,6 +5,22 @@
 <link rel="stylesheet" href="/static/style.css">
 {% end %}
 
+{% block error_messages %}
+
+  {% if status is not None %}
+    {% if status == 'success' and new_user is not None %}
+      <h3><font color="red">El usuario {{new_user}} ha sido agregado.</font></h3>
+    {% elif status == 'mismatch' %}
+      <h3><font color="red">Los dos logins nuevos no coinciden.</font></h3>
+    {% elif status == 'short' %}
+      <h3><font color="red">El nuevo login es muy corto, intente de nuevo.</font></h3>
+    {% elif status == 'error' %}
+      <h3><font color="red">Ha ocurrido un error, por favor intente de nuevo.</font></h3>
+    {% end %}
+  {% end %}
+
+{% end %}
+
 {% block content %}
       <h1>Agregue un nuevo hospital</h1>
 
@@ -21,12 +37,18 @@
             </div>
           </div>
           <div class="form-elem positive">
-            <label for="clave" class="form-label">Clave de ingreso</label>
+            <label for="clave" class="form-label">Clave de ingreso (mínimo 7 caracteres)</label>
             <div>
               <input class="form-control" type="password" name="clave" id="clave">
             </div>
             <input class="form-control" type="hidden"
              name="user" id="user" value="{{user}}">
+          </div>
+          <div class="form-elem positive">
+            <label for="clave_2" class="form-label">Confirme clave de ingreso</label>
+            <div>
+              <input class="form-control" type="password" name="clave_2" id="clave_2">
+            </div>
           </div>
         </div>
 

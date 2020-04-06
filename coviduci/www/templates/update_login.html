@@ -13,7 +13,7 @@
     {% elif status == 'wrong_pwd' %}
       <h3><font color="red">El login original es incorrecta.</font></h3>
     {% elif status == 'mismatch' %}
-      <h3><font color="red">Los dos logins neuvos no coinciden.</font></h3>
+      <h3><font color="red">Los dos logins nuevos no coinciden.</font></h3>
     {% elif status == 'short' %}
       <h3><font color="red">El nuevo login es muy corto, intente de nuevo.</font></h3>
     {% elif status == 'error' %}
@@ -27,7 +27,7 @@
 <div class="inicio">
   <h1>CovidUCI-EC Login</h1>
   <hr class="title">
-  <h3>Ingrese su login original y el nuevo login. Cada login debe tener al menos 6 caracteres.</h3>
+  <h3>Ingrese su login original y el nuevo login. Cada login debe tener al menos 7 caracteres.</h3>
   <form action="/update_login" method="post">
     <h4>Ingrese su clave original: <input type="password" name="clave_original"></h4>
     <h4>Ingrese su nueva clave: <input type="password" name="clave_nueva_1"></h4>

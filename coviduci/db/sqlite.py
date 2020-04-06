@@ -221,9 +221,11 @@ class SQLiteDB:
 
   def update_data(self, **kwargs):
     if 'user' not in kwargs:
+      logging.info('ERROR: "user" not in kwargs')
       return
     if kwargs['user'] == 'admin':
       if 'display_name' not in kwargs or 'clave' not in kwargs:
+        logging.info('ERROR: "display_name" or "clave" not in kwargs')
         return
       hospital, display_name = unescape_html(kwargs['display_name'])
       add_user = """INSERT INTO users (name, login, display_name) VALUES
