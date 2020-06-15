@@ -277,7 +277,7 @@ class SQLiteDB:
                        'rocuronio', 'norepinefrina', 'dopamina', 'dobutamina',
                        'antivirales', 'azitromicina', 'ceftriaxone',
                        'ampicilina_sulbactam', 'piperazilina', 'enoxaheparina',
-                       'metilprednisolona', 'dexametasona']:
+                       'metilprednisolona', 'dexametasona', 'hidroxicloroquina']:
       query = """INSERT INTO medicaciones (hospital, {status}, timestamp)
                  VALUES ('{hospital}', '{medicacion}', {timestamp})"""
       self._conn.execute(query.format(status=kwargs[medicacion],
